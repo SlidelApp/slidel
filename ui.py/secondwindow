@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
 
         # Create a vertical layout for the frame
         self.layout = QVBoxLayout(self.side_frame)
-        self.layout.setSpacing(40)  # Set vertical spacing between buttons to 0
+        self.layout.setSpacing(40)  # Set vertical spacing between buttons to 0 
 
         # Add some empty space at the top
         self.layout.addSpacing(40)
