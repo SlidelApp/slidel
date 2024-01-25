@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
             "zoomin.png",
             "zoomout.png",
             "eraser.png",
-            "previousslide.png",
+            "pre.png",
             "nextslide.png",
             "exit.png"
         ]
