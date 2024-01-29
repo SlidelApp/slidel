@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QHBoxLayout, QLabel
 from PySide6.QtGui import QPixmap, QIcon
-from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from PySide6.QtWidgets import QVBoxLayout
 
 import sys
 
@@ -46,8 +46,8 @@ class MainWindow(QMainWindow):
             button_layout.addWidget(button)
 
             label = QLabel(data["name"], self.side_frame)
-            label.setAlignment(Qt.AlignCenter)
-            label.setStyleSheet("color: white; font-size: 14px;")
+            label.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)  # Align label to center
+            label.setStyleSheet("color: #F8C40D; font-size: 14px; font-weight: bold;")  # Set color to #F8C40D and make it bold
             button_layout.addWidget(label)
 
             self.layout.addLayout(button_layout)  # Add the horizontal layout to the vertical layout
@@ -65,8 +65,8 @@ class MainWindow(QMainWindow):
         exit_button_layout.addWidget(exit_button)
 
         exit_label = QLabel("Exit", self.side_frame)
-        exit_label.setAlignment(Qt.AlignCenter)
-        exit_label.setStyleSheet("color: white; font-size: 14px;")
+        exit_label.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)  # Align label to center
+        exit_label.setStyleSheet("color: #F8C40D; font-size: 14px; font-weight: bold;")  # Set color to #F8C40D and make it bold
         exit_button_layout.addWidget(exit_label)
 
         self.layout.addLayout(exit_button_layout)  # Add the horizontal layout to the vertical layout
