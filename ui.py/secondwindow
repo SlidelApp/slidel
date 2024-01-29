@@ -1,6 +1,8 @@
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QHBoxLayout, QLabel
 from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+
 import sys
 
 class MainWindow(QMainWindow):
@@ -13,7 +15,7 @@ class MainWindow(QMainWindow):
 
         # Create a new frame
         self.side_frame = QWidget(self)
-        self.side_frame.setGeometry(1150, 20, 150, 865)  # Adjust the position and size as needed
+        self.side_frame.setGeometry(1090, 20, 220, 865)  # Adjust the position and size as needed
         self.side_frame.setStyleSheet('background-color:#19222A;  border-radius: 50px;')
 
         # Create a vertical layout for the frame
@@ -30,30 +32,44 @@ class MainWindow(QMainWindow):
             {"icon": "eraser.png", "name": "Eraser"},
             {"icon": "pre.png", "name": "Previous Slide"},
             {"icon": "nextslide.png", "name": "Next Slide"},
-            {"icon": "exit.png", "name": "Exit"}
         ]
 
         # Add push buttons and labels to the layout
         for data in button_data:
+            button_layout = QHBoxLayout()  # Create a horizontal layout for each button and its label
+
             button = QPushButton(self.side_frame)
             button.setStyleSheet("background-color: #F8C40D; color: white; font-size: 16px; font-weight: bold ; border: 1px solid #F8C40D; padding: 5px; border-radius: 5px;")
             button.setFixedSize(70, 40)  # Set fixed size for each button
             button.setIcon(QIcon(data["icon"]))
             button.setIconSize(QSize(30, 30))
-            self.layout.addWidget(button)
+            button_layout.addWidget(button)
 
             label = QLabel(data["name"], self.side_frame)
             label.setAlignment(Qt.AlignCenter)
             label.setStyleSheet("color: white; font-size: 14px;")
-            label.setVisible(False)  # Initially hide the label
-            self.layout.addWidget(label)
+            button_layout.addWidget(label)
 
-            # Connect hover events
-            button.enterEvent = lambda event, label=label: label.setVisible(True)
-            button.leaveEvent = lambda event, label=label: label.setVisible(False)
+            self.layout.addLayout(button_layout)  # Add the horizontal layout to the vertical layout
 
-        # Adjust spacing between buttons and frame
+        # Add some empty space between buttons and the last button
         self.layout.addStretch()
+
+        # Add the last button separately
+        exit_button_layout = QHBoxLayout()  # Create a horizontal layout for the last button and its label
+        exit_button = QPushButton(self.side_frame)
+        exit_button.setStyleSheet("background-color: #F8C40D; color: white; font-size: 16px; font-weight: bold ; border: 1px solid #F8C40D; padding: 5px; border-radius: 5px;")
+        exit_button.setFixedSize(70, 40)
+        exit_button.setIcon(QIcon("exit.png"))
+        exit_button.setIconSize(QSize(30, 30))
+        exit_button_layout.addWidget(exit_button)
+
+        exit_label = QLabel("Exit", self.side_frame)
+        exit_label.setAlignment(Qt.AlignCenter)
+        exit_label.setStyleSheet("color: white; font-size: 14px;")
+        exit_button_layout.addWidget(exit_label)
+
+        self.layout.addLayout(exit_button_layout)  # Add the horizontal layout to the vertical layout
 
         # Add some empty space at the bottom
         self.layout.addSpacing(40)
