@@ -17,7 +17,7 @@ class FileUploder(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("File Uploader")
-        self.setFixedSize(300, 100)
+        
 
         layout = QVBoxLayout()
 
