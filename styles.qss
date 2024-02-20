@@ -1,0 +1,11 @@
+QWidget {
+    background-color: #19222A;
+    color: #fff;
+}
+
+QLabel {
+    font-weight: bold;
+    color: #424549; 
+}
+
+
