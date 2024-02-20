@@ -34,6 +34,16 @@ class MainWindow(QMainWindow):
             {"icon": "nextslide.png", "name": "Next Slide"},
         ]
 
+        # Load the image
+        image_path = "slidemodel-presentations.png"  # Replace "image.jpg" with the actual path to your image file
+        image = QPixmap(image_path)
+
+        # Add a QLabel for the image
+        image_label = QLabel(self)
+        image_label.setGeometry(60, 115 , 1000, 700)  # Adjust the position and size as needed
+        image_label.setPixmap(image)
+
+
         # Add push buttons and labels to the layout
         for data in button_data:
             button_layout = QHBoxLayout()  # Create a horizontal layout for each button and its label

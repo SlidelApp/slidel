@@ -46,6 +46,16 @@ class MainWindow(QMainWindow):
             button.setIconSize(QSize(30, 30))
             layout.addWidget(button)
 
+        # Load the image
+        image_path = "slidemodel-presentations.png"  # Replace "image.jpg" with the actual path to your image file
+        image = QPixmap(image_path)
+
+        # Add a QLabel for the image
+        image_label = QLabel(self)
+        image_label.setGeometry(60, 115, 1050, 700)  # Adjust the position and size as needed
+        image_label.setPixmap(image)
+
+
         # Adjust spacing between buttons and frame
         layout.addStretch()
 
