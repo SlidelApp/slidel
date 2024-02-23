@@ -10,7 +10,7 @@ repos:
     hooks:
     -   id: pyupgrade
         name: pyupgrade
-        entry: bash -c "cd frontend && poetry run pyupgrade --py39-plus $@" --
+        entry: bash -c "cd frontend && poetry run pyupgrade --py39-plus $(for file in $@; do echo \"../$file\"; done)" --
         language: python
         types: [python]
         pass_filenames: true
