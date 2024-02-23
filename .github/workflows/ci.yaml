@@ -16,13 +16,14 @@ jobs:
     
     - name: Install dependencies
       run: |
-        cd frontend
         python -m pip install --upgrade pip
         pip install poetry
         poetry install --with dev
+      working-directory: ./frontend
 
     - name: Run linting
       run: poetry run pre-commit run --all-files
+      working-directory: ./frontend
 
   test:
         needs: linting
