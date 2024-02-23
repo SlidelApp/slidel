@@ -6,7 +6,9 @@ authors = ["Jason Mishike <jasonmishi@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.10"
+
+django = "^5.0.2"
 
 
 [build-system]
