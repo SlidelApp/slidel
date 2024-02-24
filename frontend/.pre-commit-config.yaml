@@ -3,28 +3,29 @@ repos:
     hooks:
       - id: system
         name: isort
-        entry: bash -c "cd frontend && poetry run isort ."
-        language: system
+        entry: python scripts/poetry_run_wrapper.py frontend isort .
+        language: python
         pass_filenames: false
   - repo: local
     hooks:
-    -   id: pyupgrade
-        name: pyupgrade
-        entry: bash -c "cd frontend && poetry run pyupgrade --py39-plus $(for file in $@; do echo \"../$file\"; done)" --
-        language: python
-        types: [python]
-        pass_filenames: true
+      -   id: pyupgrade
+          name: pyupgrade
+          entry: python scripts/pyupgrade_wrapper.py frontend
+          language: python
+          types: [python]
+          pass_filenames: true
+          files: ^frontend/.*$
   - repo: local
     hooks:
       - id: system
         name: Black
-        entry: bash -c "cd frontend && poetry run black ."
-        language: system
+        entry: python scripts/poetry_run_wrapper.py frontend black .
+        language: python
         pass_filenames: false
   - repo: local
     hooks:
       - id: system
         name: flake8
-        entry: bash -c "cd frontend && poetry run flake8 ."
-        language: system
+        entry: python scripts/poetry_run_wrapper.py frontend flake8 .
+        language: python
         pass_filenames: false
