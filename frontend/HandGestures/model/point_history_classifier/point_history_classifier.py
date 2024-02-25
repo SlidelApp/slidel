@@ -1,9 +1,9 @@
-# flake8: noqa
+# flake8: noqa: E501
 import numpy as np
 import tensorflow as tf
 
 
-class PointHistoryClassifier(object):
+class PointHistoryClassifier:
 
     def __init__(
         self,
