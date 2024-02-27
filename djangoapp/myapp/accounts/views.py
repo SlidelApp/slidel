@@ -8,8 +8,11 @@ def create_account(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')  # Update 'home' with the name of your home page URL
+            return redirect('home') 
     else:
         form = UserCreationForm()
 
-    return render(request, 'accounts/create_account.html', {'form': form})
+        return render(request, 'create_account.html', {'form': form})
+
+
+
