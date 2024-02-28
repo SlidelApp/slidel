@@ -23,11 +23,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry install --with dev
-      working-directory: ./frontend_old
+      working-directory: ./frontend_py
 
     - name: "Frontend: Run linting"
       run: poetry run pre-commit run --all-files
-      working-directory: ./frontend_old
+      working-directory: ./frontend_py
 
     - name: "Backend: Install dependencies"
       run: |
