@@ -3,6 +3,7 @@ from io import BytesIO
 from PIL import Image
 import fitz  # PyMuPDF
 from pptx import Presentation
+from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 def convert_pdf_to_images(pdf_file, output_folder):
     # Create output folder if it doesn't exist
@@ -18,6 +19,8 @@ def convert_pdf_to_images(pdf_file, output_folder):
         image = page.get_pixmap()
         image_bytes = BytesIO(image.tobytes())
         image_pil = Image.open(image_bytes)
+        # Resize image to reduce memory usage
+        image_pil.thumbnail((1024, 1024))
         image_pil.save(os.path.join(output_folder, f'page_{page_number + 1}.jpg'))
 
 def convert_pptx_to_images(pptx_file, output_folder):
@@ -30,8 +33,22 @@ def convert_pptx_to_images(pptx_file, output_folder):
     
     # Convert each slide of the presentation into an image
     for i, slide in enumerate(presentation.slides):
-        image_path = os.path.join(output_folder, f'slide_{i + 1}.jpg')
-        slide.export(image_path)
+        for shape in slide.shapes:
+            if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
+                # If the shape is a picture, save it as an image
+                image = shape.image
+                image_bytes = BytesIO(image.blob)
+                image_pil = Image.open(image_bytes)
+                # Resize image to reduce memory usage
+                image_pil.thumbnail((1024, 1024))
+                image_pil.save(os.path.join(output_folder, f'slide_{i + 1}.jpg'))
+                break
+        else:
+            # If no picture shape found, create a blank slide
+            slide_image = Image.new('RGB', (int(presentation.slide_width), int(presentation.slide_height)), (255, 255, 255))
+            # Resize image to reduce memory usage
+            slide_image.thumbnail((1024, 1024))
+            slide_image.save(os.path.join(output_folder, f'slide_{i + 1}.jpg'))
 
 def convert_file_to_images(input_file, output_folder):
     # Determine the file type based on extension
@@ -47,8 +64,15 @@ def convert_file_to_images(input_file, output_folder):
 
 if __name__ == "__main__":
     # Specify the input file and output folder
-    input_file = 'D:\\slidel\\slidel\\ui.py\\input.pdf'  # Change this to the path of the uploaded file
-    output_folder = 'output_images'  # Change this to the desired output folder
+    pdf_file = 'D:\\slidel\\slidel\\ui.py\\input.pdf'
+    pptx_file = 'D:\\slidel\\slidel\\ui.py\\input.pptx'
+    output_folder_pdf = 'pdf_images'
+    output_folder_pptx = 'pptx_images'
     
-    # Convert the input file to images
-    convert_file_to_images(input_file, output_folder)
+    # Convert PDF to images
+    convert_pdf_to_images(pdf_file, output_folder_pdf)
+    print(f'PDF converted to images. Images saved in {output_folder_pdf} folder.')
+    
+    # Convert PPTX to images
+    convert_pptx_to_images(pptx_file, output_folder_pptx)
+    print(f'PPTX converted to images. Images saved in {output_folder_pptx} folder.')
