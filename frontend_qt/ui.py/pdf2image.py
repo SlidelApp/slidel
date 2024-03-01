@@ -64,7 +64,7 @@ def convert_file_to_images(input_file, output_folder):
 
 if __name__ == "__main__":
     # Specify the input file and output folder
-    pdf_file = 'D:\\slidel\\slidel\\ui.py\\input.pdf'
+    pdf_file = 'D:\\slidel\\slidel\\frontend_qt\\ui.py\\input.pdf'
     pptx_file = 'D:\\slidel\\slidel\\ui.py\\input.pptx'
     output_folder_pdf = 'pdf_images'
     output_folder_pptx = 'pptx_images'
