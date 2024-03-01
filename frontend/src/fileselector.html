@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Sector</title>
+    <style>
+        body {
+            background-color: #19222A;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        .logo {
+            background-color: #F8C40D;
+            width: 100px; /* Adjust width of logo */
+            height: 100px; /* Adjust height of logo */
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo img {
+            width: 80%;
+            height: auto;
+        }
+        .user-profile {
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .user-profile label {
+            display: block;
+            margin-right: 10px;
+            color: #FFFFFF;
+        }
+        .user-profile input[type="text"] {
+            padding: 15px 15px 15px 50px; /* Adjust padding for the image */
+            border: 2px solid #F8C40D;
+            border-radius: 5px;
+            background-color: transparent;
+            color: #FFFFFF;
+            width: 160px; /* Adjust width of text input */
+            box-sizing: border-box;
+            position: relative; /* Set position relative for absolute positioning of image */
+        }
+        .user-profile .user-image {
+            position: absolute;
+            left: 10px; /* Adjust left position */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%);
+            width: 30px; /* Adjust size of image */
+            height: 30px; /* Adjust size of image */
+            border-radius: 50%;
+            overflow: hidden; /* Hide overflow for round image */
+        }
+        .user-profile .user-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* Add any additional CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="your-logo.png" alt="Your Logo">
+    </div>
+
+    <div class="user-profile">
+        
+        <div class="user-image">
+            <img src="image.png" alt= "Image">
+        </div>
+        <input type="text" id="username" value="Eran Jager">
+    </div>
+
+    <!-- Add any additional HTML content or elements here -->
+
+    <!-- Link any JavaScript files if needed -->
+    <script src="filesector.js"></script>
+</body>
+</html>
