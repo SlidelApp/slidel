@@ -4,4 +4,25 @@ body {
   margin: auto;
   max-width: 38rem;
   padding: 2rem;
+  background-image: url('Assets/image.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  color: aliceblue;
+
 }
+
+.login {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  max-width: 20rem;
+  padding: 2rem;
+  background-color: #1E1E1E;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+  
+
+
