@@ -11,6 +11,8 @@ import numpy as np
 from model import KeyPointClassifier, PointHistoryClassifier
 from utils import CvFpsCalc
 
+import os
+print("Absolute path to model file:", os.path.abspath("path/to/keypoint_classifier.tflite"))
 
 def get_args():
     parser = argparse.ArgumentParser()
