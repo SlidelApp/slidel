@@ -1,10 +1,10 @@
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
@@ -19,6 +19,7 @@ def create_account(request):
         form = UserCreationForm()
 
         return render(request, "create_account.html", {"form": form})
+
 
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
