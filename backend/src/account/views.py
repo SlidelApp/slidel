@@ -26,5 +26,14 @@ def create_account(request):
 @permission_classes([IsAuthenticated])
 class YourApiView(APIView):
     def get(self, request):
-        # Your view logic here
         return Response({"message": "Authenticated successfully!"})
+    
+    def get(self, request):
+        # View logic
+        user = request.user  # The authenticated user
+        response_data = {
+            'message': 'Authenticated successfully!',
+            'user_id': user.id,
+            'username': user.username,
+        }
+        return Response(response_data)
