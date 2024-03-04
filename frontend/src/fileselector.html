@@ -32,7 +32,7 @@
       font-weight: bold;
       margin-bottom: 10px; /* Add margin bottom to create space for the rectangle */
     }
-    h2.Recent-file{
+    h2.recent-file{
       position: absolute;
       top: 560px; /* Adjust top position */
       left: 1280px; /* Adjust left position */
@@ -40,7 +40,7 @@
       font-weight: bold;
       
     }
-    h2.Recent-file::after {
+    h2.recent-file::after {
       content: none; /* This removes the rectangle */
     }
     
@@ -67,59 +67,33 @@
       color: #FFFFFF;
       font-weight: bold;
     }
-    .logo {
-      background-color: #F8C40D;
-      width: 60px; /* Adjust width of logo */
-      height: 60px; /* Adjust height of logo */
-      border-radius: 50%;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .logo img {
-      width: 80%;
-      height: auto;
-    }
-    .user-profile {
-      position: absolute;
-      top: 40px;
-      right: 20px;
-      display: flex;
-      align-items: center;
-    }
-    .user-profile img {
-      width: 40px; /* Adjust size of user image */
-      height: 40px; /* Adjust size of user image */
-      border-radius: 50%; /* Make it round */
-      position: absolute; /* Position the image absolutely */
-      left: 10px; /* Adjust left position */
-    }
-    .user-profile input[type="text"] {
-      padding: 15px 15px 15px 55px; /* Adjust padding for image */
-      border: 2px solid #F8C40D;
-      border-radius: 5px;
-      background-color: transparent;
-      color: #FFFFFF;
-      width: 160px; /* Adjust width of text input */
-      text-align: right; /* Align text to right */
-      box-sizing: border-box;
-    }
     /* Add any additional CSS styles here */
   </style>
 </head>
 <body>
-  <div class="logo">
-    <img src=".src\\logo 2.png" alt="Your Logo">
-  </div>
-  
+  <header>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-auto me-auto">
+          <div>
+            <img src="./logo 2.png" alt="Your Logo">
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="profile">
+            <span>Eran Jager</span>
+            <img src="user-image.png" alt="User Image">
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
   <h1>YOUR FILES</h1>
   <h2>Last used file</h2>
   <h2 class="blank-canvas">Blank Canvas</h2>
   <h2 class = "open-file ">Open File</h2>
-  <h2 class="Recent-file">Recent Files
+  <h2 class="recent-file">Recent Files
     <ul>
       <li><a href="#">Sample File 1</a></li>
       <br>
@@ -129,10 +103,6 @@
     </ul>
   </h2>
   
-  <div class="user-profile">
-    <input type="text" id="username" value="Eran Jager">
-    <img src="user-image.png" alt="User Image">
-  </div>
   
   <!-- Link any JavaScript files if needed -->
   <script src="filesector.js"></script>
