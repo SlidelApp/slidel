@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 from django.db import models  # noqa
 from django.contrib.auth.models import User
 from django.db import models
@@ -15,6 +16,8 @@ class UserSettings(models.Model):
         return f"Settings for {self.user.username}"
 
 =======
+=======
+>>>>>>> 342428f6c0b2780fd55213f63296eed108f917a0
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
@@ -34,4 +37,7 @@ class CustomUser(AbstractUser):
         related_name="customuser_set",
         related_query_name="user",
     )
+<<<<<<< HEAD
+>>>>>>> 342428f6c0b2780fd55213f63296eed108f917a0
+=======
 >>>>>>> 342428f6c0b2780fd55213f63296eed108f917a0
