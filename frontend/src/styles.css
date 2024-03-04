@@ -14,3 +14,14 @@ h1 {
 h2 {
   font-weight: 800;
 }
+
+/* header styles */
+
+header {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+header .logo {
+  max-height: 4rem;
+}
