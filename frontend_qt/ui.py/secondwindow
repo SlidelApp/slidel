@@ -1,0 +1,102 @@
+from PySide6.QtCore import Qt, QSize
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QHBoxLayout, QLabel
+from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtWidgets import QVBoxLayout
+
+import sys
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setGeometry(100, 100, 1320, 900)
+        self.setWindowTitle("Main Window 1")
+        self.setStyleSheet('background-color:#000000')
+
+        # Create a new frame
+        self.side_frame = QWidget(self)
+        self.side_frame.setGeometry(1090, 20, 220, 865)  # Adjust the position and size as needed
+        self.side_frame.setStyleSheet('background-color:#19222A;  border-radius: 50px;')
+
+        # Create a vertical layout for the frame
+        self.layout = QVBoxLayout(self.side_frame)
+        self.layout.setSpacing(40)  # Set vertical spacing between buttons to 0 
+
+        # Add some empty space at the top
+        self.layout.addSpacing(40)
+
+        # List of icon paths and button names
+        button_data = [
+            {"icon": "zoomin.png", "name": "Zoom In"},
+            {"icon": "zoomout.png", "name": "Zoom Out"},
+            {"icon": "eraser.png", "name": "Eraser"},
+            {"icon": "pre.png", "name": "Previous Slide"},
+            {"icon": "nextslide.png", "name": "Next Slide"},
+        ]
+
+        # Load the image
+        image_path = "slidemodel-presentations.png"  # Replace "image.jpg" with the actual path to your image file
+        image = QPixmap(image_path)
+
+        # Add a QLabel for the image
+        image_label = QLabel(self)
+        image_label.setGeometry(60, 115 , 1000, 700)  # Adjust the position and size as needed
+        image_label.setPixmap(image)
+
+
+        # Add push buttons and labels to the layout
+        for data in button_data:
+            button_layout = QHBoxLayout()  # Create a horizontal layout for each button and its label
+
+            button = QPushButton(self.side_frame)
+            button.setStyleSheet("background-color: #F8C40D; color: white; font-size: 16px; font-weight: bold ; border: 1px solid #F8C40D; padding: 5px; border-radius: 5px;")
+            button.setFixedSize(70, 40)  # Set fixed size for each button
+            button.setIcon(QIcon(data["icon"]))
+            button.setIconSize(QSize(30, 30))
+            button_layout.addWidget(button)
+
+            label = QLabel(data["name"], self.side_frame)
+            label.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)  # Align label to center
+            label.setStyleSheet("color: #F8C40D; font-size: 14px; font-weight: bold;")  # Set color to #F8C40D and make it bold
+            button_layout.addWidget(label)
+
+            self.layout.addLayout(button_layout)  # Add the horizontal layout to the vertical layout
+
+        # Add some empty space between buttons and the last button
+        self.layout.addStretch()
+
+        # Add the last button separately
+        exit_button_layout = QHBoxLayout()  # Create a horizontal layout for the last button and its label
+        exit_button = QPushButton(self.side_frame)
+        exit_button.setStyleSheet("background-color: #F8C40D; color: white; font-size: 16px; font-weight: bold ; border: 1px solid #F8C40D; padding: 5px; border-radius: 5px;")
+        exit_button.setFixedSize(70, 40)
+        exit_button.setIcon(QIcon("exit.png"))
+        exit_button.setIconSize(QSize(30, 30))
+        exit_button_layout.addWidget(exit_button)
+
+        exit_label = QLabel("Exit", self.side_frame)
+        exit_label.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)  # Align label to center
+        exit_label.setStyleSheet("color: #F8C40D; font-size: 14px; font-weight: bold;")  # Set color to #F8C40D and make it bold
+        exit_button_layout.addWidget(exit_label)
+
+        self.layout.addLayout(exit_button_layout)  # Add the horizontal layout to the vertical layout
+
+        # Add some empty space at the bottom
+        self.layout.addSpacing(40)
+
+        # Load the icon image for the main window label
+        icon_path = "download.png"  # Replace with the actual path to your icon image
+        icon = QPixmap(icon_path)
+
+        # Add a label to the top-left corner of the main window
+        self.label = QLabel(self)
+        self.label.setGeometry(60, 50, 200, 60)
+        self.label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        self.label.setStyleSheet("color: white; font-size: 20px; font-weight: bold ; border: 1px solid #F8C40D; padding: 2px;")
+        self.label.setText(f'<img src="{icon.toImage()}" width="30" height="30"> Eren Jaeger')
+
+if __name__ == "__main__":
+    app = QApplication([])
+    main_window = MainWindow()
+    main_window.show()
+    sys.exit(app.exec())

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.db import models  # noqa
 from django.contrib.auth.models import User
 from django.db import models
@@ -13,3 +14,24 @@ class UserSettings(models.Model):
     def __str__(self):
         return f"Settings for {self.user.username}"
 
+=======
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.db import models
+
+
+class CustomUser(AbstractUser):
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name="groups",
+        blank=True,
+        related_name="customuser_set",
+        related_query_name="user",
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name="user permissions",
+        blank=True,
+        related_name="customuser_set",
+        related_query_name="user",
+    )
+>>>>>>> 342428f6c0b2780fd55213f63296eed108f917a0
