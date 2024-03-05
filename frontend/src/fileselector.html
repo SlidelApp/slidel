@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Sector</title>
+    <style>
+        body {
+            background-color: #19222A;
+            color: #FFFFFF;
+            font-family: 'Sen', sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        h1 {
+            position: absolute;
+            top: 100px; /* Adjust top position */
+            left: 80px; /* Adjust left position */
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        h2 {
+            position: absolute;
+            top: 180px; /* Adjust top position */
+            left: 80px; /* Adjust left position */
+            color: #FFFFFF;
+            font-weight: bold;
+            margin-bottom: 10px; /* Add margin bottom to create space for the rectangle */
+        }
+        h2.Recent-file{
+            position: absolute;
+            top: 560px; /* Adjust top position */
+            left: 1280px; /* Adjust left position */
+            color: #FFFFFF;
+            font-weight: bold;
+           
+        }
+        h2.Recent-file::after {
+        content: none; /* This removes the rectangle */
+        }
+
+        .open-file {
+            position: absolute;
+            top: 180px; /* Adjust top position */
+            left: 1280px; /* Adjust left position */
+            color: #FFFFFF;
+            font-weight: bold;
+            margin-bottom: 10px; /* Add margin bottom to create space for the rectangle */
+        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 420px; /* Adjust width of the rectangle */
+            height: 300px; /* Adjust height of the rectangle */
+            background-color: #D9D9D9; /* Color of the rectangle */
+            margin-top: 5px; /* Adjust distance between text and rectangle */
+        }
+        .blank-canvas {
+            position: absolute;
+            top: 560px; /* Adjust top position */
+            left: 80px; /* Adjust left position */
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        .logo {
+            background-color: #F8C40D;
+            width: 60px; /* Adjust width of logo */
+            height: 60px; /* Adjust height of logo */
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo img {
+            width: 80%;
+            height: auto;
+        }
+        .user-profile {
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .user-profile img {
+            width: 40px; /* Adjust size of user image */
+            height: 40px; /* Adjust size of user image */
+            border-radius: 50%; /* Make it round */
+            position: absolute; /* Position the image absolutely */
+            left: 10px; /* Adjust left position */
+        }
+        .user-profile input[type="text"] {
+            padding: 15px 15px 15px 55px; /* Adjust padding for image */
+            border: 2px solid #F8C40D;
+            border-radius: 5px;
+            background-color: transparent;
+            color: #FFFFFF;
+            width: 160px; /* Adjust width of text input */
+            text-align: right; /* Align text to right */
+            box-sizing: border-box;
+        }
+        /* Add any additional CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src=".src\\logo 2.png" alt="Your Logo">
+    </div>
+
+    <h1>YOUR FILES</h1>
+    <h2>Last used file</h2>
+    <h2 class="blank-canvas">Blank Canvas</h2>
+    <h2 class = "open-file ">Open File</h2>
+    <h2 class="Recent-file">Recent Files
+        <ul>
+            <li><a href="#">Sample File 1</a></li>
+            <br>
+            <li><a href="#">Sample File 2</a></li>
+            <br>
+            <li><a href="#">Sample File 3</a></li>
+        </ul>
+    </h2>
+    
+      
+        
+
+    <div class="user-profile">
+        <input type="text" id="username" value="Eran Jager">
+        <img src="user-image.png" alt="User Image">
+    </div>
+
+    <!-- Add any additional HTML content or elements here -->
+
+    <!-- Link any JavaScript files if needed -->
+    <script src="filesector.js"></script>
+</body>
+</html>
