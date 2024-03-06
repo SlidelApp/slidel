@@ -53,4 +53,9 @@ function toggleEditMode(input) {
 
 function confirmDeleteAccount() {
   const result = confirm('Are you sure you want to delete your account?');
+  if (result) {
+    console.log('Account Deleted');
+  } else {
+    console.log('Deletion Cancelled');
+  }
 }
