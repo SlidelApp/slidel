@@ -47,3 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
   deleteButton.addEventListener('click', () => confirmDeleteAccount());
 });
 
+function toggleEditMode(input) {
+  input.readOnly = !input.readOnly;
+}
