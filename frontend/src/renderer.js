@@ -29,6 +29,7 @@
 import './index.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-  
+  const editDisplayNameButton = document.getElementById('editDisplayName');
+
 });
 
