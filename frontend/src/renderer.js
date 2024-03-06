@@ -33,5 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const editUsernameButton = document.getElementById('editUsername');
   const editPasswordButton = document.getElementById('editPassword');
   const homeButton = document.getElementById('homeButton');
+  const deleteButton = document.getElementById('deleteButton');
 });
 
