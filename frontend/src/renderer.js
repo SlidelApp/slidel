@@ -36,5 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteButton = document.getElementById('deleteButton');
 
   const displayNameInput = document.getElementById('displayName');
+  const usernameInput = document.getElementById('username');
 });
 
