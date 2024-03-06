@@ -41,5 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   editDisplayNameButton.addEventListener('click', () => toggleEditMode(displayNameInput));
   editUsernameButton.addEventListener('click', () => toggleEditMode(usernameInput));
+  editPasswordButton.addEventListener('click', () => toggleEditMode(passwordInput));
 });
 
