@@ -37,5 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const displayNameInput = document.getElementById('displayName');
   const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
 });
 
