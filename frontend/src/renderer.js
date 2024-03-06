@@ -34,5 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const editPasswordButton = document.getElementById('editPassword');
   const homeButton = document.getElementById('homeButton');
   const deleteButton = document.getElementById('deleteButton');
+
+  const displayNameInput = document.getElementById('displayName');
 });
 
