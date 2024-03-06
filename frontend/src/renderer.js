@@ -44,5 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
   editPasswordButton.addEventListener('click', () => toggleEditMode(passwordInput));
 
   homeButton.addEventListener('click', () => console.log('Going to Home Page'));
+  deleteButton.addEventListener('click', () => confirmDeleteAccount());
 });
 
