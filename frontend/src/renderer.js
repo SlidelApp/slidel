@@ -51,4 +51,6 @@ function toggleEditMode(input) {
   input.readOnly = !input.readOnly;
 }
 
-function confirmDeleteAccount() {}
+function confirmDeleteAccount() {
+  const result = confirm('Are you sure you want to delete your account?');
+}
