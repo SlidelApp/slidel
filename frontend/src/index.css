@@ -7,13 +7,18 @@ body {
 }
 
 #container {
-  width: 400px;
+  width: 600px;
+  height: 400px;
   margin: 20px auto;
   padding: 20px;
   box-sizing: border-box;
-  background-color: #424549;
+  background-color: #242425;
   border-radius: 10px;
-  border: 2px solid #e74c3c;
+  border: 10px solid #424549;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 h1 {
