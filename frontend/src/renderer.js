@@ -50,3 +50,5 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleEditMode(input) {
   input.readOnly = !input.readOnly;
 }
+
+function confirmDeleteAccount() {}
