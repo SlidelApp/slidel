@@ -31,6 +31,6 @@ import './index.css';
 document.addEventListener('DOMContentLoaded', () => {
   const editDisplayNameButton = document.getElementById('editDisplayName');
   const editUsernameButton = document.getElementById('editUsername');
-
+  const editPasswordButton = document.getElementById('editPassword');
 });
 
