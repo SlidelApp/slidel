@@ -42,5 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   editDisplayNameButton.addEventListener('click', () => toggleEditMode(displayNameInput));
   editUsernameButton.addEventListener('click', () => toggleEditMode(usernameInput));
   editPasswordButton.addEventListener('click', () => toggleEditMode(passwordInput));
+
+  homeButton.addEventListener('click', () => console.log('Going to Home Page'));
 });
 
