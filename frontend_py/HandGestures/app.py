@@ -659,54 +659,5 @@ def draw_info(image, fps, mode, number):
             )
     return image
 
-# Initialize Flask app
-app = Flask(__name__)
-
-# Global dictionary to store WebSocket clients
-clients = set()
-
-# Function to send SSE messages to all connected clients
-async def send_sse_message(message):
-    for client in clients:
-        await client.send(message)
-
-# Define your Flask routes
-@app.route('/')
-def index():
-    return "Backend Server is running!"
-
-@app.route('/events')
-async def events():
-    # Create an SSE response
-    async def event_stream():
-        while True:
-            await asyncio.sleep(1)  # Adjust sleep time as needed
-            message = "gestureDetected"  # Message to be sent
-            yield f"data: {message}\n\n"
-
-    # Return SSE response
-    return Response(event_stream(), content_type='text/event-stream')
-
-# Your existing main function
-def main():
-    args = get_args()
-
-    # Rest of your main function...
-
-if __name__ == "__main__":
-    # Start the Flask app
-    app.run(debug=True)
-
-# # Send signal to frontend
-# async def handle(websocket, path):
-#     # Send message when gesture is detected
-#     await websocket.send("gestureDetected")
-
-# start_server = websockets.serve(handle, "localhost", 8000)
-
-# asyncio.get_event_loop().run_until_complete(start_server)
-# asyncio.get_event_loop().run_forever()
-
-
 if __name__ == "__main__":
     main()
