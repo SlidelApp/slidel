@@ -86,7 +86,18 @@ def calculate_transformation_coefficients(x0, y0, x1, y1, x2, y2, x3, y3):
 
 
 def keystone_correction(
-    x, y, x0, y0, x1, y1, x2, y2, x3, y3, resolution_width=1024, resolution_height=768
+    x,
+    y,
+    x0,
+    y0,
+    x1,
+    y1,
+    x2,
+    y2,
+    x3,
+    y3,
+    resolution_width=1024,
+    resolution_height=768,
 ):
     a, b, c, d, e, f, g, h = calculate_transformation_coefficients(
         x0, y0, x1, y1, x2, y2, x3, y3
