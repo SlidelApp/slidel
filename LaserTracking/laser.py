@@ -143,3 +143,37 @@ class LaserTracker(object):
         self.track(frame, self.channels["laser"])
 
         return hsv_image
+
+    def display(self, img, frame):
+        cv2.imshow("RGB_VideoFrame", frame)
+        cv2.imshow("LaserPointer", self.channels["laser"])
+        if self.display_thresholds:
+            cv2.imshow("Thresholded_HSV_Image", img)
+            cv2.imshow("Hue", self.channels["hue"])
+            cv2.imshow("Saturation", self.channels["saturation"])
+            cv2.imshow("Value", self.channels["value"])
+
+    def setup_windows(self):
+        sys.stdout.write(f"Using OpenCV version: {cv2.__version__}\n")
+
+        self.create_and_position_window("LaserPointer", 0, 0)
+        self.create_and_position_window("RGB_VideoFrame", 10 + self.cam_width, 0)
+        if self.display_thresholds:
+            self.create_and_position_window("Thresholded_HSV_Image", 10, 10)
+            self.create_and_position_window("Hue", 20, 20)
+            self.create_and_position_window("Saturation", 30, 30)
+            self.create_and_position_window("Value", 40, 40)
+
+    def run(self):
+        self.setup_windows()
+        self.setup_camera_capture()
+
+        while True:
+            success, frame = self.capture.read()
+            if not success:
+                sys.stderr.write("Could not read camera frame. Quitting\n")
+                sys.exit(1)
+
+            hsv_image = self.detect(frame)
+            self.display(hsv_image, frame)
+            self.handle_quit()
