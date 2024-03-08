@@ -118,3 +118,28 @@ class LaserTracker(object):
 
         cv2.add(self.trail, frame, frame)
         self.previous_position = center
+
+    def detect(self, frame):
+        hsv_img = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        h, s, v = cv2.split(hsv_img)
+        self.channels["hue"] = h
+        self.channels["saturation"] = s
+        self.channels["value"] = v
+
+        self.threshold_image("hue")
+        self.threshold_image("saturation")
+        self.threshold_image("value")
+
+        self.channels["laser"] = cv2.bitwise_and(
+            self.channels["hue"], self.channels["value"]
+        )
+        self.channels["laser"] = cv2.bitwise_and(
+            self.channels["saturation"], self.channels["laser"]
+        )
+
+        hsv_image = cv2.merge(
+            [self.channels["hue"], self.channels["saturation"], self.channels["value"]]
+        )
+        self.track(frame, self.channels["laser"])
+
+        return hsv_image
