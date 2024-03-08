@@ -90,3 +90,31 @@ class LaserTracker(object):
 
         if channel == "hue":
             self.channels["hue"] = cv2.bitwise_not(self.channels["hue"])
+
+    def track(self, frame, mask):
+        center = None
+        contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[
+            -2
+        ]
+
+        if len(contours) > 0:
+            c = max(contours, key=cv2.contourArea)
+            ((x, y), radius) = cv2.minEnclosingCircle(c)
+            moments = cv2.moments(c)
+            if moments["m00"] > 0:
+                center = int(moments["m10"] / moments["m00"]), int(
+                    moments["m01"] / moments["m00"]
+                )
+            else:
+                center = int(x), int(y)
+
+            if radius > 10:
+                cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
+                cv2.circle(frame, center, 5, (0, 0, 255), -1)
+                if self.previous_position:
+                    cv2.line(
+                        self.trail, self.previous_position, center, (255, 255, 255), 2
+                    )
+
+        cv2.add(self.trail, frame, frame)
+        self.previous_position = center
