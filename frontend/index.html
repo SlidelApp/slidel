@@ -26,27 +26,6 @@
 
       // Event listener for the button click
       document.getElementById('insertSentenceBtn').addEventListener('click', insertSentence);
-
-      // Function to set up Server-Sent Events
-      function setupSSE() {
-        const eventSource = new EventSource('/events');
-
-        // Event listener for messages from the server
-        eventSource.onmessage = function(event) {
-          if (event.data === 'gestureDetected') {
-            // Trigger the button click
-            document.getElementById('insertSentenceBtn').click();
-          }
-        };
-
-        // Event listener for errors
-        eventSource.onerror = function(error) {
-          console.error("EventSource failed:", error);
-        };
-      }
-
-      // Call the function to set up Server-Sent Events
-      setupSSE();
     </script>
   
   </body>
