@@ -4,15 +4,49 @@
     <meta charset="UTF-8" />
     <title>Hello World!</title>
 
-    <!-- bootstrap -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
   </head>
   <body>
     <h1>💖 Hello World!</h1>
     <p>Welcome to your Electron application.</p>
+
+    <!-- Button to insert a sentence -->
+    <button id="insertSentenceBtn" class="btn btn-primary">Insert Sentence</button>
+
     <script type="module" src="/src/renderer.js"></script>
 
-     <!-- Add the Bootstrap JavaScript file -->
+    <!-- Bootstrap JavaScript -->
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Function to handle WebSocket messages
+      function handleWebSocketMessage(event) {
+          // Check if the message indicates the gesture you are interested in
+          if (event.data === 'gestureDetected') {
+              // Trigger the button click
+              document.getElementById('insertSentenceBtn').click();
+          }
+      }
+    
+      // Establish WebSocket connection
+      const socket = new WebSocket('ws://localhost:8001'); // Replace with your WebSocket server address
+    
+      // Event listener for WebSocket messages
+      socket.addEventListener('message', handleWebSocketMessage);
+    
+      // Function to insert a sentence in the body
+      function insertSentence() {
+          // Create a new <p> element with the sentence
+          var sentence = document.createElement('p');
+          sentence.textContent = "This is a new sentence.";
+          // Insert the sentence into the body
+          document.body.appendChild(sentence);
+      }
+    
+      // Add event listener to the button
+      document.getElementById('insertSentenceBtn').addEventListener('click', insertSentence);
+    </script>
+    
   </body>
 </html>

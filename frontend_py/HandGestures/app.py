@@ -11,6 +11,9 @@ import numpy as np
 from model import KeyPointClassifier, PointHistoryClassifier
 from utils import CvFpsCalc
 
+import asyncio
+import websockets
+
 import os
 print("Absolute path to model file:", os.path.abspath("path/to/keypoint_classifier.tflite"))
 
@@ -654,6 +657,16 @@ def draw_info(image, fps, mode, number):
                 cv.LINE_AA,
             )
     return image
+
+# Send signal to frontend
+async def handle(websocket, path):
+    # Send message when gesture is detected
+    await websocket.send("gestureDetected")
+
+start_server = websockets.serve(handle, "localhost", 8000)
+
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
 
 
 if __name__ == "__main__":
