@@ -9,4 +9,6 @@ def create_user_settings(sender, instance, created, **kwargs):
     if created:
         # Create a new UserSettings object for the newly created User
         display_name = instance.last_name + " " + instance.first_name
+        if not display_name.strip():
+            display_name = instance.username
         UserSettings.objects.create(user=instance, display_name=display_name)
