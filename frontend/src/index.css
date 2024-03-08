@@ -7,29 +7,28 @@ body {
 }
 
 body#login {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
   background-image: url('Assets/image.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
-  color: aliceblue;
-
 }
 
-.login {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  max-width: 20rem;
-  padding: 2rem;
-  background-color: #1E1E1E;
+section.login {
   border-radius: 0.3rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+section.login>.row {
+  height: 100vh;
+}
+
+section.login #login-logo {
+  max-width: 300px;
+}
+
+div.login-form {
+  background-color: #1E1E1E;
 }
   
 .header {
@@ -52,54 +51,4 @@ body#login {
   border-radius: 50px;
   border: 15px solid #424549;
   margin-top: 50px;
-}
-
-label {
-  font-weight: bold;
-  font-size: 16px;
-  color: #424549;
-  display: block;
-  margin-bottom: 5px;
-  margin-left: 50px;
-}
-
-input {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #424549;
-  border-radius: 3px;
-  margin-bottom: 10px;
-  width: 250px;
-  margin-left: 50px;
-  margin-right: 120px;
-}
-
-button {
-  padding: 7px 25px;
-  font-size: 12px;
-  border: 1px solid #FFE603;
-  border-radius: 18px;
-  margin-bottom: 20px;
-  background-color: #FFE603;
-  color: #000000;
-  cursor: pointer;
-  transition: transform 0.3s ease; 
-}
-
-button:hover {
-  transform: scale(1.1); 
-}
-
-.btn-container {
-  text-align: center;
-  margin-top: 50px;
-}
-
-#homeButton {
-  display: inline-block;
-  margin-right: 50px;
-}
-
-#homeButton, #deleteButton{
-  width: 150px;
 }

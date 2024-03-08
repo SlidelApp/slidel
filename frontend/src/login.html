@@ -8,30 +8,37 @@
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
   </head>
   <body id="login">
+    <section class="login container-fluid">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6 login-form">
+          <div class="row">
+            <img id="login-logo" src="/src/Assets/logo.png" alt="" srcset="">
+          </div>
+          <div class="row">
+            <div class="col">
 
-    <section class="login-form">
-      
-    </section>
-    <section class="login">
-      
-        <img id="logo-img" src="/src/Assets/logo.png" alt="" srcset="">
-        <h2 class="text-center">Login</h2>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Username" required="required">
-          <input type="text" class="form-control" placeholder="Password" required="required">
-          <a href=""></a>
-          <input type="checkbox" name="remember-me" id="remember-me">
-          <label for="checkbox">Remember me</label>
-          <br>
-          <button type="submit">Submit</button>
-          <h5>Not yet registered? <a href="http://">Create an account</a></h5>
-          
+            </div>
+          </div>
+          <form action="">
+            <h2 class="text-center">Login</h2>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Username" required="required">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Password" required="required">
+            </div>
+            <a href=""></a>
+            <input type="checkbox" class="form-check-input" name="remember-me" id="remember-me">
+            <label class="form-check-label" for="remember-me">Remember me</label>
+            <br>
+            <button type="submit">Submit</button>
+            <h5>Not yet registered? <a href="http://">Create an account</a></h5>
+          </form>
         </div>
-
-    
-
+      </div>
     </section>
-      
+
     <script type="module" src="/src/renderer.js"></script>
 
      <!-- Add the Bootstrap JavaScript file -->
