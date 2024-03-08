@@ -14,39 +14,40 @@
     <!-- Button to insert a sentence -->
     <button id="insertSentenceBtn" class="btn btn-primary">Insert Sentence</button>
 
-    <script type="module" src="/src/renderer.js"></script>
-
-    <!-- Bootstrap JavaScript -->
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-      // Function to handle WebSocket messages
-      function handleWebSocketMessage(event) {
-          // Check if the message indicates the gesture you are interested in
-          if (event.data === 'gestureDetected') {
-              // Trigger the button click
-              document.getElementById('insertSentenceBtn').click();
-          }
-      }
-    
-      // Establish WebSocket connection
-      const socket = new WebSocket('ws://localhost:8001'); // Replace with your WebSocket server address
-    
-      // Event listener for WebSocket messages
-      socket.addEventListener('message', handleWebSocketMessage);
-    
-      // Function to insert a sentence in the body
+      // JavaScript function to insert a sentence in the body
       function insertSentence() {
-          // Create a new <p> element with the sentence
-          var sentence = document.createElement('p');
-          sentence.textContent = "This is a new sentence.";
-          // Insert the sentence into the body
-          document.body.appendChild(sentence);
+        // Create a new <p> element with the sentence
+        var sentence = document.createElement('p');
+        sentence.textContent = "This is a new sentence.";
+        // Insert the sentence into the body
+        document.body.appendChild(sentence);
       }
-    
-      // Add event listener to the button
+
+      // Event listener for the button click
       document.getElementById('insertSentenceBtn').addEventListener('click', insertSentence);
+
+      // Function to set up Server-Sent Events
+      function setupSSE() {
+        const eventSource = new EventSource('/events');
+
+        // Event listener for messages from the server
+        eventSource.onmessage = function(event) {
+          if (event.data === 'gestureDetected') {
+            // Trigger the button click
+            document.getElementById('insertSentenceBtn').click();
+          }
+        };
+
+        // Event listener for errors
+        eventSource.onerror = function(error) {
+          console.error("EventSource failed:", error);
+        };
+      }
+
+      // Call the function to set up Server-Sent Events
+      setupSSE();
     </script>
-    
+
   </body>
 </html>
