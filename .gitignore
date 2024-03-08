@@ -8,6 +8,9 @@ __pycache__/
 *.pyzw
 *.pyc
 
+# db
+*.sqlite3
+
 # Tox
 .tox/
 .tox-*/

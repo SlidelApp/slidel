@@ -17,3 +17,14 @@ class CustomUser(AbstractUser):
         related_name="customuser_set",
         related_query_name="user",
     )
+
+
+class UserSettings(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    display_name = models.CharField(max_length=60)
+    profile_picture = models.ImageField(
+        upload_to="profile_pictures/", default="default_profile_picture.jpg"
+    )
+
+    def __str__(self):
+        return f"Settings for {self.user.username}"
