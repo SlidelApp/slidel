@@ -29,19 +29,6 @@
 
       // Event listener for the button click
       document.getElementById('insertSentenceBtn').addEventListener('click', insertSentence);
-
-      // Event listener for WebSocket messages
-      socket.addEventListener('message', function (event) {
-        if (event.data === 'gestureDetected') {
-          // Trigger the button click
-          document.getElementById('insertSentenceBtn').click();
-        }
-      });
-
-      // Event listener for WebSocket errors
-      socket.addEventListener('error', function (error) {
-        console.error("WebSocket failed:", error);
-      });
     </script>
 
   </body>
