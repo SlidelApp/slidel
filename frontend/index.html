@@ -15,6 +15,9 @@
     <button id="insertSentenceBtn" class="btn btn-primary">Insert Sentence</button>
 
     <script>
+      // Establish WebSocket connection
+      const socket = new WebSocket('ws://localhost:8000/events');
+
       // JavaScript function to insert a sentence in the body
       function insertSentence() {
         // Create a new <p> element with the sentence
@@ -26,7 +29,20 @@
 
       // Event listener for the button click
       document.getElementById('insertSentenceBtn').addEventListener('click', insertSentence);
+
+      // Event listener for WebSocket messages
+      socket.addEventListener('message', function (event) {
+        if (event.data === 'gestureDetected') {
+          // Trigger the button click
+          document.getElementById('insertSentenceBtn').click();
+        }
+      });
+
+      // Event listener for WebSocket errors
+      socket.addEventListener('error', function (error) {
+        console.error("WebSocket failed:", error);
+      });
     </script>
-  
+
   </body>
 </html>
