@@ -44,7 +44,7 @@ def get_args():
     return args
 
 
-def main():
+async def main():
 
     args = get_args()
 
@@ -172,8 +172,18 @@ def main():
 
         cv.imshow("Hand Gesture Recognition", debug_image)
 
+        async with websockets.serve(websocket_server, "localhost", 8000):
+            print("WebSocket server started...")
+            await asyncio.Future()
+
     cap.release()
     cv.destroyAllWindows()
+
+async def websocket_server(websocket, path):
+    while True:
+        message = await websocket.recv()
+        print(f"Received message: {message}")
+        await websocket.send("gestureDetected")    
 
 
 def select_mode(key, mode):
@@ -660,4 +670,4 @@ def draw_info(image, fps, mode, number):
     return image
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
