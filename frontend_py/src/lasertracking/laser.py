@@ -3,6 +3,8 @@ import argparse
 import cv2
 import numpy as np
 
+from keystoning.keystone import KeystoneCorrection
+
 
 class LaserTracker(object):
 
