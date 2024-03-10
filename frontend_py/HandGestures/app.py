@@ -12,8 +12,7 @@ import numpy as np
 from model import KeyPointClassifier, PointHistoryClassifier
 from utils import CvFpsCalc
 
-import asyncio
-import websockets
+import time
 
 import os
 print("Absolute path to model file:", os.path.abspath("path/to/keypoint_classifier.tflite"))
@@ -44,9 +43,12 @@ def get_args():
     return args
 
 
-async def main():
+def main():
 
     args = get_args()
+
+    timeout = 5
+    confirm_gesture_by = 3    
 
     cap_device = args.device
     cap_width = args.width
@@ -97,8 +99,12 @@ async def main():
     finger_gesture_history = deque(maxlen=history_length)
 
     mode = 0
-
+    current_hand_sign_id = 10000
+    old_hand_sign_id = 100000000000
+    confirm_time = time.time()
+    start_time = time.time()
     while True:
+        
         fps = cvFpsCalc.get()
 
         key = cv.waitKey(10)
@@ -138,8 +144,8 @@ async def main():
                     pre_processed_landmark_list,
                     pre_processed_point_history_list,
                 )
-
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
+                current_hand_sign_id = hand_sign_id
                 if hand_sign_id == 2:
                     point_history.append(landmark_list[8])
                 else:
@@ -154,16 +160,25 @@ async def main():
 
                 finger_gesture_history.append(finger_gesture_id)
                 most_common_fg_id = Counter(finger_gesture_history).most_common()
-
-                debug_image = draw_bounding_rect(use_brect, debug_image, brect)
-                debug_image = draw_landmarks(debug_image, landmark_list)
-                debug_image = draw_info_text(
-                    debug_image,
-                    brect,
-                    handedness,
-                    keypoint_classifier_labels[hand_sign_id],
-                    point_history_classifier_labels[most_common_fg_id[0][0]],
-                )
+                if current_hand_sign_id != old_hand_sign_id or time.time() - start_time >= timeout:
+                    debug_image = draw_bounding_rect(use_brect, debug_image, brect)
+                    debug_image = draw_landmarks(debug_image, landmark_list)
+                    debug_image = draw_info_text(
+                        debug_image,
+                        brect,
+                        handedness,
+                        keypoint_classifier_labels[hand_sign_id],
+                        point_history_classifier_labels[most_common_fg_id[0][0]],
+                    )   
+                    confirm_time = time.time()
+                    start_time = time.time()
+                    old_hand_sign_id = current_hand_sign_id
+                    print("New gesture detected")
+                else:
+                    if time.time() - confirm_time >= confirm_gesture_by:
+                        print("Gesture confirmed")
+                        #Insert slide manipulation functions in here
+                        confirm_time = time.time()
         else:
             point_history.append([0, 0])
 
@@ -172,18 +187,8 @@ async def main():
 
         cv.imshow("Hand Gesture Recognition", debug_image)
 
-        async with websockets.serve(websocket_server, "localhost", 8000):
-            print("WebSocket server started...")
-            await asyncio.Future()
-
     cap.release()
     cv.destroyAllWindows()
-
-async def websocket_server(websocket, path):
-    while True:
-        message = await websocket.recv()
-        print(f"Received message: {message}")
-        await websocket.send("gestureDetected")    
 
 
 def select_mode(key, mode):
@@ -670,4 +675,4 @@ def draw_info(image, fps, mode, number):
     return image
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
