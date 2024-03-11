@@ -25,5 +25,12 @@ class CornerDetection():
             x, y = i.ravel()
             cv2.circle(frame, (x, y), 3, 255, -1)
         return frame
+    def tranformation_matrix(self, corners, frame):
+        corners = []
+        for i in corners:
+            x, y = i.ravel()
+            t = np.array([x, y])
+            corners.append(t)
+    
     
 
