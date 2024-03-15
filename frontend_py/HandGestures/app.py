@@ -3,19 +3,22 @@ import argparse
 import copy
 import csv
 import itertools
+import os
+import time
 from collections import Counter, deque
 
 import cv2 as cv
-from flask import Flask, Response
 import mediapipe as mp
 import numpy as np
+from flask import Flask, Response
 from model import KeyPointClassifier, PointHistoryClassifier
 from utils import CvFpsCalc
 
-import time
+print(
+    "Absolute path to model file:",
+    os.path.abspath("path/to/keypoint_classifier.tflite"),
+)
 
-import os
-print("Absolute path to model file:", os.path.abspath("path/to/keypoint_classifier.tflite"))
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -48,7 +51,7 @@ def main():
     args = get_args()
 
     timeout = 5
-    confirm_gesture_by = 3    
+    confirm_gesture_by = 3
 
     cap_device = args.device
     cap_width = args.width
@@ -104,7 +107,7 @@ def main():
     confirm_time = time.time()
     start_time = time.time()
     while True:
-        
+
         fps = cvFpsCalc.get()
 
         key = cv.waitKey(10)
@@ -160,7 +163,10 @@ def main():
 
                 finger_gesture_history.append(finger_gesture_id)
                 most_common_fg_id = Counter(finger_gesture_history).most_common()
-                if current_hand_sign_id != old_hand_sign_id or time.time() - start_time >= timeout:
+                if (
+                    current_hand_sign_id != old_hand_sign_id
+                    or time.time() - start_time >= timeout
+                ):
                     debug_image = draw_bounding_rect(use_brect, debug_image, brect)
                     debug_image = draw_landmarks(debug_image, landmark_list)
                     debug_image = draw_info_text(
@@ -169,7 +175,7 @@ def main():
                         handedness,
                         keypoint_classifier_labels[hand_sign_id],
                         point_history_classifier_labels[most_common_fg_id[0][0]],
-                    )   
+                    )
                     confirm_time = time.time()
                     start_time = time.time()
                     old_hand_sign_id = current_hand_sign_id
@@ -177,7 +183,7 @@ def main():
                 else:
                     if time.time() - confirm_time >= confirm_gesture_by:
                         print("Gesture confirmed")
-                        #Insert slide manipulation functions in here
+                        # Insert slide manipulation functions in here
                         confirm_time = time.time()
         else:
             point_history.append([0, 0])
@@ -673,6 +679,7 @@ def draw_info(image, fps, mode, number):
                 cv.LINE_AA,
             )
     return image
+
 
 if __name__ == "__main__":
     main()
