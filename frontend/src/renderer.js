@@ -28,4 +28,34 @@
 
 import './index.css';
 
-console.log('👋 This message is being logged by "renderer.js", included via Vite');
+document.addEventListener('DOMContentLoaded', () => {
+  const editDisplayNameButton = document.getElementById('editDisplayName');
+  const editUsernameButton = document.getElementById('editUsername');
+  const editPasswordButton = document.getElementById('editPassword');
+  const homeButton = document.getElementById('homeButton');
+  const deleteButton = document.getElementById('deleteButton');
+
+  const displayNameInput = document.getElementById('displayName');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+
+  editDisplayNameButton.addEventListener('click', () => toggleEditMode(displayNameInput));
+  editUsernameButton.addEventListener('click', () => toggleEditMode(usernameInput));
+  editPasswordButton.addEventListener('click', () => toggleEditMode(passwordInput));
+
+  homeButton.addEventListener('click', () => console.log('Going to Home Page'));
+  deleteButton.addEventListener('click', () => confirmDeleteAccount());
+});
+
+function toggleEditMode(input) {
+  input.readOnly = !input.readOnly;
+}
+
+function confirmDeleteAccount() {
+  const result = confirm('Are you sure you want to delete your account?');
+  if (result) {
+    console.log('Account Deleted');
+  } else {
+    console.log('Deletion Cancelled');
+  }
+}
