@@ -18,6 +18,21 @@ class CustomUser(AbstractUser):
         related_query_name="user",
     )
 
+class Subscription(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    users = models.ManyToManyField(
+        CustomUser,
+        verbose_name="subscribed users",
+        blank=True,
+        related_name="subscriptions",
+        related_query_name="subscription",
+    )
+
+    def __str__(self):
+        return self.name
+
 
 class UserSettings(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
