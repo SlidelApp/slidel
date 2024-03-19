@@ -40,6 +40,13 @@ class UserSettings(models.Model):
     profile_picture = models.ImageField(
         upload_to="profile_pictures/", default="default_profile_picture.jpg"
     )
+    subscriptions = models.ManyToManyField(
+        Subscription,
+        verbose_name="subscriptions",
+        blank=True,
+        related_name="subscribers",
+        related_query_name="subscriber",
+    )
 
     def __str__(self):
         return f"Settings for {self.user.username}"
