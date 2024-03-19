@@ -7,10 +7,10 @@ body {
 }
 
 .maincontainer {
-  /* Optional: Adjust margin and padding as needed */
   margin: 10px;
   padding: 10px;
   border: 2px solid #FFE603;
+  border-radius: 5px;
 }
 
 .header {
@@ -21,7 +21,31 @@ body {
 
 .launchheader {
   text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   padding: 60px;
+  align-items: center;
+}
+
+.profile{
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid #FFE603;
+  border-radius: 5px;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 20px;
+
 }
 
 .header h1,
