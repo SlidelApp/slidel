@@ -3,7 +3,10 @@ import argparse
 import cv2
 import numpy as np
 
-from keystoning.keystone import KeystoneCorrection
+import keystone 
+
+key_stone = keystone.KeystoneCorrection()
+
 
 
 class LaserTracker(object):
@@ -93,7 +96,7 @@ class LaserTracker(object):
         if channel == "hue":
             self.channels["hue"] = cv2.bitwise_not(self.channels["hue"])
 
-    def track(self, frame, mask):
+    def track(self, frame, mask, corners):
         center = None
         contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[
             -2
@@ -102,6 +105,7 @@ class LaserTracker(object):
         if len(contours) > 0:
             c = max(contours, key=cv2.contourArea)
             ((x, y), radius) = cv2.minEnclosingCircle(c)
+            
             moments = cv2.moments(c)
             if moments["m00"] > 0:
                 center = int(moments["m10"] / moments["m00"]), int(
@@ -110,6 +114,7 @@ class LaserTracker(object):
             else:
                 center = int(x), int(y)
 
+            key_stone_center = key_stone.transform(center[0], center[1])
             if radius > 10:
                 cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
                 cv2.circle(frame, center, 5, (0, 0, 255), -1)
@@ -172,6 +177,7 @@ class LaserTracker(object):
 
         while True:
             success, frame = self.capture.read()
+            
             if not success:
                 sys.stderr.write("Could not read camera frame. Quitting\n")
                 sys.exit(1)
