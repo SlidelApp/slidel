@@ -12,9 +12,19 @@ body {
   padding: 60px;
 }
 
-.header h1{
+.launchheader {
+  text-align: left;
+  padding: 60px;
+}
+
+.header h1,
+.launchheader h1 {
   color: #19222A;
   font-weight: bold;
+}
+
+.launchheader h1 {
+  color: #ffffff;
 }
 
 #container {
