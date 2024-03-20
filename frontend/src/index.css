@@ -97,6 +97,9 @@ body {
   height: 300px;
   margin-left: 20px;
   margin-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 5px;
 }
 
 .configurations label{
