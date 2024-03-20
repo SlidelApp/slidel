@@ -12,6 +12,7 @@ class HandDetector:
         model_complexity=1,
         detection_confidence=0.5,
         tracking_confidence=0.5,
+
     ):
         self.mode = mode
         self.max_hands = max_hands
@@ -28,6 +29,8 @@ class HandDetector:
             self.tracking_confidence,
         )
         self.mpDraw = mp.solutions.drawing_utils
+        self.tipId = [4,8,12,16,20]
+
 
     def findHands(self, img, draw=True):
         imgRGB = cv.cvtColor(img, cv.COLOR_BGRA2RGB)
@@ -326,8 +329,12 @@ class HandDetector:
                 
         return lmList
     
-    def figersUp(self):
-        pass
+    def figersUp(self,lmlist,tipId):
+        fingers = []
+
+        if lmlist[tipId][0][1] > lmlist[tipId - 1][1]:
+            fingers.append(1)
+
     
     
     
