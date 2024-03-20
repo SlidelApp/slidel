@@ -338,7 +338,11 @@ class HandDetector:
             fingers.append(0)
 
         
-    
+        for id in range(1,5):
+            if lmlist[self.tipId[id]][2] < lmlist[self.tipId[id]-2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
     
     
 
