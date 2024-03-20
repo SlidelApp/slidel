@@ -102,10 +102,17 @@ button:hover {
 #homeButton {
   display: inline-block;
   margin-right: 50px;
+  border-color: #2E9DCC;
 }
 
 #homeButton, #deleteButton{
   width: 150px;
+  color: white;
+  background-color: #19222A;
+}
+
+#deleteButton{
+  border-color: #DB3470;
 }
 
 .yellow-box{
