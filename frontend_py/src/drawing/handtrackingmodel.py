@@ -329,12 +329,15 @@ class HandDetector:
                 
         return lmList
     
-    def figersUp(self,lmlist,tipId):
+    def figersUp(self,lmlist):
         fingers = []
 
-        if lmlist[tipId][0][1] > lmlist[tipId - 1][1]:
+        if lmlist[self.tipId[0]][1] > lmlist[self.tipId[0] - 1][1]:
             fingers.append(1)
+        else:
+            fingers.append(0)
 
+        
     
     
     
