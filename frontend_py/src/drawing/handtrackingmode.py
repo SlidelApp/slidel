@@ -10,8 +10,8 @@ class HandDetector:
         mode=False,
         max_hands=2,
         model_complexity=1,
-        detection_confidence=0.5,
-        tracking_confidence=0.5,
+        detection_confidence=0.9,
+        tracking_confidence=0.9,
     ):
         self.mode = mode
         self.max_hands = max_hands
