@@ -325,7 +325,7 @@ class HandDetector:
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
 
-                lmList.append([Id,cx, cy])
+                lmList.append([Id,cx,cy])
                 
         return lmList
     
