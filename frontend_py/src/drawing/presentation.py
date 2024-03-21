@@ -14,26 +14,30 @@ folderPath = "Presentation"
 pathImg = sorted(os.listdir(folderPath), key=len)   
 print(pathImg)
 
-#Variables
+# Variables
 imgNum = 0
 hs,ws = int(120*1), int(213*1) 
-
+gestureThreadshold = 300
 while True:
     success, img = cap.read()
+    img = cv.flip(img, 1)
     pathFullImage = os.path.join(folderPath, pathImg[imgNum])
     imgCurrent = cv.imread(pathFullImage)
 
-
-    #Adding webcam image in slide
+    # Adding webcam image in slide
     imgSmall = cv.resize(img, (ws, hs))
     h,w,_ = imgCurrent.shape
     imgCurrent[0:hs, 0:ws] = imgSmall
 
+    handDetector = htm.HandDetector(detection_confidence=0.7,max_hands=1)
+    img = handDetector.findHands(img)
+    hands = img
 
-
-
-
-
+    if hands.size > 0:
+        hands = hands[0]
+        fingers = handDetector.figersUp(hands)
+        print(fingers)
+        cv.line(img(0,gestureThreadshold), (width,gestureThreadshold), (0,0,255), 10)
 
     cv.imshow("Image", img)
     cv.imshow("Current Image", imgCurrent)
