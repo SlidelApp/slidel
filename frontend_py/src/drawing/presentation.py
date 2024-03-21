@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 import os
-
+import handtrackingmodel as htm
 width, height = 1280, 720
 
 # Capture video from webcam
@@ -22,6 +22,12 @@ while True:
     success, img = cap.read()
     pathFullImage = os.path.join(folderPath, pathImg[imgNum])
     imgCurrent = cv.imread(pathFullImage)
+
+
+    #Adding webcam image in slide
+    imgSmall = cv.resize(img, (ws, hs))
+    h,w,_ = imgCurrent.shape
+    imgCurrent[0:hs, 0:ws] = imgSmall
 
 
 
