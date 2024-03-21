@@ -14,8 +14,22 @@ folderPath = "Presentation"
 pathImg = sorted(os.listdir(folderPath), key=len)   
 print(pathImg)
 
+#Variables
+imgNum = 0
+hs,ws = int(120*1), int(213*1) 
+
 while True:
     success, img = cap.read()
+    pathFullImage = os.path.join(folderPath, pathImg[imgNum])
+    imgCurrent = cv.imread(pathFullImage)
+
+
+
+
+
+
+
     cv.imshow("Image", img)
+    cv.imshow("Current Image", imgCurrent)
     if cv.waitKey(1) & 0xFF == ord("q"):
         break
