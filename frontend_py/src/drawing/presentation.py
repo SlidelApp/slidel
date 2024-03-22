@@ -91,7 +91,27 @@ while True:
         if fingers == [0, 1, 1, 0, 0]:
             cv2.circle(SlideCurrent, index_finger, 12, (0, 0, 255), cv2.FILLED)
 
-        
+        # Gesture-4 Draw
+        if fingers == [0, 1, 0, 0, 0]:
+            if annotation_start is False:
+                annotation_start = True
+                annotation_number += 1
+                annotations.append([])
+            cv2.circle(SlideCurrent, index_finger, 12, (0, 0, 255), cv2.FILLED)
+            annotations[annotation_number].append(index_finger)
+        else:
+            annotation_start = False
+
+        # Gesture-5
+        if fingers == [0, 1, 1, 1, 1]:
+            if annotations:
+                annotations.pop(-1)
+                annotation_number -= 1
+                button_pressed = True
+
+        # Gesture - 6
+        # if fingers == [1,1,1,1,0]:
+
     # Button_Pressed itreation
     if button_pressed:
         button_counter += 1
@@ -99,7 +119,17 @@ while True:
             button_counter = 0
             button_pressed = False
 
-    
+    for i in range(len(annotations)):
+        for j in range(len(annotations[i])):
+            if j != 0:
+                cv2.line(
+                    SlideCurrent,
+                    annotations[i][j - 1],
+                    annotations[i][j],
+                    (0, 255, 0),
+                    12,
+                )
+
     # Adding WebCam Img to the Slide
     imgSmall = cv2.resize(img, (ws, hs))
     h, w, _ = SlideCurrent.shape
