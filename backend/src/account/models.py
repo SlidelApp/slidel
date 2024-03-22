@@ -37,7 +37,7 @@ class Subscription(models.Model):
         verbose_name="subscribed user",
         related_name="subscription",
         related_query_name="subscription",
-        null=True,
+        
     )
 
     def __str__(self):
