@@ -1,357 +1,221 @@
-import cv2 as cv
+
+import math
+
+import cv2
 import mediapipe as mp
-import time
 
 
 class HandDetector:
-
+   
     def __init__(
         self,
-        mode=False,
-        max_hands=2,
-        model_complexity=1,
-        detection_confidence=0.9,
-        tracking_confidence=0.9,
+        staticMode=False,
+        maxHands=2,
+        modelComplexity=1,
+        detectionCon=0.5,
+        minTrackCon=0.5,
     ):
-        self.mode = mode
-        self.max_hands = max_hands
-        self.detection_confidence = detection_confidence
-        self.tracking_confidence = tracking_confidence
-        self.model_complexity = model_complexity
-
+        
+        self.staticMode = staticMode
+        self.maxHands = maxHands
+        self.modelComplexity = modelComplexity
+        self.detectionCon = detectionCon
+        self.minTrackCon = minTrackCon
         self.mpHands = mp.solutions.hands
         self.hands = self.mpHands.Hands(
-            self.mode,
-            self.max_hands,
-            self.model_complexity,
-            self.detection_confidence,
-            self.tracking_confidence,
+            static_image_mode=self.staticMode,
+            max_num_hands=self.maxHands,
+            model_complexity=modelComplexity,
+            min_detection_confidence=self.detectionCon,
+            min_tracking_confidence=self.minTrackCon,
         )
+
         self.mpDraw = mp.solutions.drawing_utils
+        self.tipIds = [4, 8, 12, 16, 20]
+        self.fingers = []
+        self.lmList = []
 
-    def findHands(self, img, draw=True):
-        imgRGB = cv.cvtColor(img, cv.COLOR_BGRA2RGB)
-        self.result = self.hands.process(imgRGB)
+    def findHands(self, img, draw=True, flipType=True):
+        
+        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.results = self.hands.process(imgRGB)
+        allHands = []
+        h, w, c = img.shape
+        if self.results.multi_hand_landmarks:
+            for handType, handLms in zip(
+                self.results.multi_handedness, self.results.multi_hand_landmarks
+            ):
+                myHand = {}
+                ## lmList
+                mylmList = []
+                xList = []
+                yList = []
+                for id, lm in enumerate(handLms.landmark):
+                    px, py, pz = int(lm.x * w), int(lm.y * h), int(lm.z * w)
+                    mylmList.append([px, py, pz])
+                    xList.append(px)
+                    yList.append(py)
 
-        # print(result.multi_hand_landmarks)
-        if self.result.multi_hand_landmarks:
-            for handLms in self.result.multi_hand_landmarks:
+                ## bbox
+                xmin, xmax = min(xList), max(xList)
+                ymin, ymax = min(yList), max(yList)
+                boxW, boxH = xmax - xmin, ymax - ymin
+                bbox = xmin, ymin, boxW, boxH
+                cx, cy = bbox[0] + (bbox[2] // 2), bbox[1] + (bbox[3] // 2)
+
+                myHand["lmList"] = mylmList
+                myHand["bbox"] = bbox
+                myHand["center"] = (cx, cy)
+
+                if flipType:
+                    if handType.classification[0].label == "Right":
+                        myHand["type"] = "Left"
+                    else:
+                        myHand["type"] = "Right"
+                else:
+                    myHand["type"] = handType.classification[0].label
+                allHands.append(myHand)
+
+                ## draw
                 if draw:
                     self.mpDraw.draw_landmarks(
                         img, handLms, self.mpHands.HAND_CONNECTIONS
                     )
+                    cv2.rectangle(
+                        img,
+                        (bbox[0] - 20, bbox[1] - 20),
+                        (bbox[0] + bbox[2] + 20, bbox[1] + bbox[3] + 20),
+                        (255, 0, 255),
+                        2,
+                    )
+                    cv2.putText(
+                        img,
+                        myHand["type"],
+                        (bbox[0] - 30, bbox[1] - 30),
+                        cv2.FONT_HERSHEY_PLAIN,
+                        2,
+                        (255, 0, 255),
+                        2,
+                    )
 
-        return img
-    
-    def draw_landmarks(image, landmark_point):
-    
-        if len(landmark_point) > 0:
+        return allHands, img
 
-            cv.line(image, tuple(landmark_point[2]), tuple(landmark_point[3]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[2]),
-                tuple(landmark_point[3]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(image, tuple(landmark_point[3]), tuple(landmark_point[4]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[3]),
-                tuple(landmark_point[4]),
-                (255, 255, 255),
-                2,
-            )
+    def fingersUp(self, myHand):
+        
+        fingers = []
+        myHandType = myHand["type"]
+        myLmList = myHand["lmList"]
+        if self.results.multi_hand_landmarks:
 
-            cv.line(image, tuple(landmark_point[5]), tuple(landmark_point[6]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[5]),
-                tuple(landmark_point[6]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(image, tuple(landmark_point[6]), tuple(landmark_point[7]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[6]),
-                tuple(landmark_point[7]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(image, tuple(landmark_point[7]), tuple(landmark_point[8]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[7]),
-                tuple(landmark_point[8]),
-                (255, 255, 255),
-                2,
-            )
+            # Thumb
+            if myHandType == "Right":
+                if myLmList[self.tipIds[0]][0] > myLmList[self.tipIds[0] - 1][0]:
+                    fingers.append(1)
+                else:
+                    fingers.append(0)
+            else:
+                if myLmList[self.tipIds[0]][0] < myLmList[self.tipIds[0] - 1][0]:
+                    fingers.append(1)
+                else:
+                    fingers.append(0)
 
-            cv.line(
-                image, tuple(landmark_point[9]), tuple(landmark_point[10]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[9]),
-                tuple(landmark_point[10]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[10]), tuple(landmark_point[11]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[10]),
-                tuple(landmark_point[11]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[11]), tuple(landmark_point[12]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[11]),
-                tuple(landmark_point[12]),
-                (255, 255, 255),
-                2,
-            )
+            # 4 Fingers
+            for id in range(1, 5):
+                if myLmList[self.tipIds[id]][1] < myLmList[self.tipIds[id] - 2][1]:
+                    fingers.append(1)
+                else:
+                    fingers.append(0)
+        return fingers
 
-            cv.line(
-                image, tuple(landmark_point[13]), tuple(landmark_point[14]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[13]),
-                tuple(landmark_point[14]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[14]), tuple(landmark_point[15]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[14]),
-                tuple(landmark_point[15]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[15]), tuple(landmark_point[16]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[15]),
-                tuple(landmark_point[16]),
-                (255, 255, 255),
-                2,
-            )
+    def findDistance(self, p1, p2, img=None, color=(255, 0, 255), scale=5):
+        
 
-            cv.line(
-                image, tuple(landmark_point[17]), tuple(landmark_point[18]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[17]),
-                tuple(landmark_point[18]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[18]), tuple(landmark_point[19]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[18]),
-                tuple(landmark_point[19]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[19]), tuple(landmark_point[20]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[19]),
-                tuple(landmark_point[20]),
-                (255, 255, 255),
-                2,
-            )
+        x1, y1 = p1
+        x2, y2 = p2
+        cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+        length = math.hypot(x2 - x1, y2 - y1)
+        info = (x1, y1, x2, y2, cx, cy)
+        if img is not None:
+            cv2.circle(img, (x1, y1), scale, color, cv2.FILLED)
+            cv2.circle(img, (x2, y2), scale, color, cv2.FILLED)
+            cv2.line(img, (x1, y1), (x2, y2), color, max(1, scale // 3))
+            cv2.circle(img, (cx, cy), scale, color, cv2.FILLED)
 
-            cv.line(image, tuple(landmark_point[0]), tuple(landmark_point[1]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[0]),
-                tuple(landmark_point[1]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(image, tuple(landmark_point[1]), tuple(landmark_point[2]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[1]),
-                tuple(landmark_point[2]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(image, tuple(landmark_point[2]), tuple(landmark_point[5]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[2]),
-                tuple(landmark_point[5]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(image, tuple(landmark_point[5]), tuple(landmark_point[9]), (0, 0, 0), 6)
-            cv.line(
-                image,
-                tuple(landmark_point[5]),
-                tuple(landmark_point[9]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[9]), tuple(landmark_point[13]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[9]),
-                tuple(landmark_point[13]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[13]), tuple(landmark_point[17]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[13]),
-                tuple(landmark_point[17]),
-                (255, 255, 255),
-                2,
-            )
-            cv.line(
-                image, tuple(landmark_point[17]), tuple(landmark_point[0]), (0, 0, 0), 6
-            )
-            cv.line(
-                image,
-                tuple(landmark_point[17]),
-                tuple(landmark_point[0]),
-                (255, 255, 255),
-                2,
-            )
-
-        for index, landmark in enumerate(landmark_point):
-            if index == 0:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 1:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 2:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 3:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 4:
-                cv.circle(image, (landmark[0], landmark[1]), 8, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 8, (0, 0, 0), 1)
-            if index == 5:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 6:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 7:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 8:
-                cv.circle(image, (landmark[0], landmark[1]), 8, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 8, (0, 0, 0), 1)
-            if index == 9:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 10:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 11:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 12:
-                cv.circle(image, (landmark[0], landmark[1]), 8, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 8, (0, 0, 0), 1)
-            if index == 13:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 14:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 15:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 16:
-                cv.circle(image, (landmark[0], landmark[1]), 8, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 8, (0, 0, 0), 1)
-            if index == 17:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 18:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 19:
-                cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 5, (0, 0, 0), 1)
-            if index == 20:
-                cv.circle(image, (landmark[0], landmark[1]), 8, (255, 255, 255), -1)
-                cv.circle(image, (landmark[0], landmark[1]), 8, (0, 0, 0), 1)
-
-        return image
-
-    def findpositions(self, img, handNo=0, draw=True):
-
-        lmList = []
-        if self.result.multi_hand_landmarks:
-            myhand = self.result.multi_hand_landmarks[handNo]
-
-            for Id, lm in enumerate(myhand.landmark):
-                h, w, c = img.shape
-                cx, cy = int(lm.x * w), int(lm.y * h)
-
-                lmList.append([Id,cx, cy])
-                
-        return lmList
-    
-    
-    
+        return length, info, img
 
 
 def main():
-    pTime = 0
-    cTime = 0
-    cap = cv.VideoCapture(0)
-    detector = HandDetector()
+    # Initialize the webcam to capture video
+    # The '2' indicates the third camera connected to your computer; '0' would usually refer to the built-in camera
+    cap = cv2.VideoCapture(0)
 
+    # Initialize the HandDetector class with the given parameters
+    detector = HandDetector(
+        staticMode=False,
+        maxHands=2,
+        modelComplexity=1,
+        detectionCon=0.5,
+        minTrackCon=0.5,
+    )
+
+    # Continuously get frames from the webcam
     while True:
+        # Capture each frame from the webcam
+        # 'success' will be True if the frame is successfully captured, 'img' will contain the frame
         success, img = cap.read()
-        img = detector.findHands(img)
-        lmlst = detector.findpositions(img)
-        print(lmlst)
-        # img = detector.draw_landmarks(img, lmlst)
-        cTime = time.time()
-        fps = 1 / (cTime - pTime)
-        pTime = cTime
 
-        cv.putText(
-            img, str(int(fps)), (10, 70), cv.FONT_HERSHEY_TRIPLEX, 3, (255, 0, 255), 3
-        )
+        # Find hands in the current frame
+        # The 'draw' parameter draws landmarks and hand outlines on the image if set to True
+        # The 'flipType' parameter flips the image, making it easier for some detections
+        hands, img = detector.findHands(img, draw=True, flipType=True)
 
-        cv.imshow("Hand Tracking", img)
-        cv.waitKey(1) & 0xFF == ord('q')
+        # Check if any hands are detected
+        if hands:
+            # Information for the first hand detected
+            hand1 = hands[0]  # Get the first hand detected
+            lmList1 = hand1["lmList"]  # List of 21 landmarks for the first hand
+            bbox1 = hand1[
+                "bbox"
+            ]  # Bounding box around the first hand (x,y,w,h coordinates)
+            center1 = hand1["center"]  # Center coordinates of the first hand
+            handType1 = hand1["type"]  # Type of the first hand ("Left" or "Right")
+
+            # Count the number of fingers up for the first hand
+            fingers1 = detector.fingersUp(hand1)
+            print(
+                f"H1 = {fingers1.count(1)}", end=" "
+            )  # Print the count of fingers that are up
+
+            # Calculate distance between specific landmarks on the first hand and draw it on the image
+            length, info, img = detector.findDistance(
+                lmList1[8][0:2], lmList1[12][0:2], img, color=(255, 0, 255), scale=10
+            )
+
+            # Check if a second hand is detected
+            if len(hands) == 2:
+                # Information for the second hand
+                hand2 = hands[1]
+                lmList2 = hand2["lmList"]
+                bbox2 = hand2["bbox"]
+                center2 = hand2["center"]
+                handType2 = hand2["type"]
+
+                # Count the number of fingers up for the second hand
+                fingers2 = detector.fingersUp(hand2)
+                print(f"H2 = {fingers2.count(1)}", end=" ")
+
+                # Calculate distance between the index fingers of both hands and draw it on the image
+                length, info, img = detector.findDistance(
+                    lmList1[8][0:2], lmList2[8][0:2], img, color=(255, 0, 0), scale=10
+                )
+
+            print(" ")  # New line for better readability of the printed output
+
+        # Display the image in a window
+        cv2.imshow("Image", img)
+
+        # Keep the window open and update it for each frame; wait for 1 millisecond between frames
+        cv2.waitKey(1)
 
 
 if __name__ == "__main__":
