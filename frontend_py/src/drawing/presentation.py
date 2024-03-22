@@ -3,141 +3,134 @@ import cv2
 import os
 from handtrackingmode import HandDetector
 
-# Parameters
-width, height = 1280, 720
-FolderPath = "Presentation"  # Directory in which Presentation Slides are kept
-hs, ws = 120, 213
 
-# Cam_Setup
+class Presentation:
+    def __init__(
+        self, width=1280, height=720, folder_path="Presentation", hs=120, ws=213
+    ):
+        self.width = width
+        self.height = height
+        self.folder_path = folder_path
+        self.hs = hs
+        self.ws = ws
 
-cam = cv2.VideoCapture(0)
-cam.set(3, ws)
-cam.set(4, hs)
+        self.cam = cv2.VideoCapture(0)
+        self.cam.set(3, self.ws)
+        self.cam.set(4, self.hs)
 
-# Presentation_Slides -> Getting the list of the slide names and sorting them according to their length [ length of the slide name ]
-# sorted_fuction
-pathSlides = sorted(os.listdir(FolderPath), key=len)
-# print(pathSlides)
+        self.path_slides = sorted(os.listdir(self.folder_path), key=len)
+        self.slide_num = 0
+        self.gesture_threshold = 300
+        self.button_pressed = False
+        self.button_counter = 0
+        self.button_delay = 30
+        self.annotations = [[]]
+        self.annotation_number = -1
+        self.annotation_start = False
 
-# Variables
-SlideNum = 0
-gestureThreshold = 300
-button_pressed = False
-button_counter = 0
-button_delay = 30
-annotations = [[]]
-annotation_number = -1
-annotation_start = False
+        self.detector = HandDetector(detectionCon=0.8, maxHands=1)
 
-# Hand_Detector
-# Here, detectionCon = the code will run if it is 80% of the oblect being a hand.
-detector = HandDetector(detectionCon=0.8, maxHands=1)
+    def process_gestures(self, hands, img):
+        if hands and self.button_pressed is False:
+            hand = hands[0]
+            fingers = self.detector.fingersUp(hand)
+            cx, cy = hand["center"]
+            lm_list = hand["lmList"]
 
-while True:
-    success, img = cam.read()
-    # To flip the img 1= horizontal , 0= vertical ; but here right becomes left and vice versa.
-    img = cv2.flip(img, 1)
-    img = cv2.line(
-        img, (0, gestureThreshold), (width, gestureThreshold), (100, 255, 205), 10
-    )
+            x_val = int(np.interp(lm_list[8][0], [0, self.width // 4], [0, self.width]))
+            y_val = int(
+                np.interp(lm_list[8][1], [0, self.height - 500], [0, self.height])
+            )
+            index_finger = x_val, y_val
 
-    # Here FolderPath is the Project Directory
-    pathFullSlides = os.path.join(FolderPath, pathSlides[SlideNum])
-    SlideCurrent = cv2.imread(pathFullSlides)
+            if cy <= self.gesture_threshold:
+                if fingers == [1, 0, 0, 0, 0]:
+                    print("Left")
+                    if self.slide_num > 0:
+                        self.button_pressed = True
+                        self.annotations = [[]]
+                        self.annotation_number = -1
+                        self.annotation_start = False
+                        self.slide_num -= 1
 
-    # cv2.flip( var, 1) + flipType = False == Perfectly flipped img.
-    hands, img = detector.findHands(
-        img, flipType=False
-    )  # flipType = Flase it will nt flip the img. right will remain right and vice versa.
+                if fingers == [0, 0, 0, 0, 1]:
+                    print("Right")
+                    if self.slide_num < len(self.path_slides) - 1:
+                        self.button_pressed = True
+                        self.annotations = [[]]
+                        self.annotation_number = -1
+                        self.annotation_start = False
+                        self.slide_num += 1
 
-    if hands and button_pressed is False:
-        hand = hands[0]
-        fingers = detector.fingersUp(hand)
-        cx, cy = hand["center"]
-        # land_mark_list
-        lm_list = hand["lmList"]
+            if fingers == [0, 1, 1, 0, 0]:
+                cv2.circle(img, index_finger, 12, (0, 0, 255), cv2.FILLED)
 
-        # Constrain Region for pointer
-        # np.interp(variable[fitting-size],[actual_size])
-        x_val = int(np.interp(lm_list[8][0], [0, width // 4], [0, width]))
-        y_val = int(np.interp(lm_list[8][1], [0, height - 500], [0, height]))
-        index_finger = x_val, y_val
+            if fingers == [0, 1, 0, 0, 0]:
+                if self.annotation_start is False:
+                    self.annotation_start = True
+                    self.annotation_number += 1
+                    self.annotations.append([])
+                cv2.circle(img, index_finger, 12, (0, 0, 255), cv2.FILLED)
+                self.annotations[self.annotation_number].append(index_finger)
+            else:
+                self.annotation_start = False
 
-        if cy <= gestureThreshold:  # If hand is above the gestureThreshold
-            # Gesture-0 Left
-            if fingers == [1, 0, 0, 0, 0]:
-                print("Left")
+            if fingers == [0, 1, 1, 1, 1]:
+                if self.annotations:
+                    self.annotations.pop(-1)
+                    self.annotation_number -= 1
+                    self.button_pressed = True
 
-                if SlideNum > 0:
-                    button_pressed = True
-                    annotations = [[]]
-                    annotation_number = -1
-                    annotation_start = False
+    def run(self):
+        while True:
+            success, img = self.cam.read()
+            img = cv2.flip(img, 1)
+            img = cv2.line(
+                img,
+                (0, self.gesture_threshold),
+                (self.width, self.gesture_threshold),
+                (100, 255, 205),
+                10,
+            )
 
-                    SlideNum -= 1
+            path_full_slides = os.path.join(
+                self.folder_path, self.path_slides[self.slide_num]
+            )
+            slide_current = cv2.imread(path_full_slides)
 
-            # Gesture-1 Right
-            if fingers == [0, 0, 0, 0, 1]:
-                print("Right")
-                if SlideNum < len(pathSlides) - 1:
-                    button_pressed = True
-                    annotations = [[]]
-                    annotation_number = -1
-                    annotation_start = False
+            hands, img = self.detector.findHands(img, flipType=False)
 
-                    SlideNum += 1
+            self.process_gestures(hands, img)
 
-        # Gesture-3 Pointer
-        if fingers == [0, 1, 1, 0, 0]:
-            cv2.circle(SlideCurrent, index_finger, 12, (0, 0, 255), cv2.FILLED)
+            if self.button_pressed:
+                self.button_counter += 1
+                if self.button_counter > self.button_delay:
+                    self.button_counter = 0
+                    self.button_pressed = False
 
-        # Gesture-4 Draw
-        if fingers == [0, 1, 0, 0, 0]:
-            if annotation_start is False:
-                annotation_start = True
-                annotation_number += 1
-                annotations.append([])
-            cv2.circle(SlideCurrent, index_finger, 12, (0, 0, 255), cv2.FILLED)
-            annotations[annotation_number].append(index_finger)
-        else:
-            annotation_start = False
+            for i in range(len(self.annotations)):
+                for j in range(len(self.annotations[i])):
+                    if j != 0:
+                        cv2.line(
+                            slide_current,
+                            self.annotations[i][j - 1],
+                            self.annotations[i][j],
+                            (0, 255, 0),
+                            12,
+                        )
 
-        # Gesture-5
-        if fingers == [0, 1, 1, 1, 1]:
-            if annotations:
-                annotations.pop(-1)
-                annotation_number -= 1
-                button_pressed = True
+            img_small = cv2.resize(img, (self.ws, self.hs))
+            h, w, _ = slide_current.shape
+            slide_current[0 : self.hs, w - self.ws : w] = img_small
 
-        # Gesture - 6
-        # if fingers == [1,1,1,1,0]:
+            cv2.imshow("Slides", slide_current)
+            cv2.imshow("Image", img)
 
-    # Button_Pressed itreation
-    if button_pressed:
-        button_counter += 1
-        if button_counter > button_delay:
-            button_counter = 0
-            button_pressed = False
+            key = cv2.waitKey(1)
+            if key == ord("q"):
+                break
 
-    for i in range(len(annotations)):
-        for j in range(len(annotations[i])):
-            if j != 0:
-                cv2.line(
-                    SlideCurrent,
-                    annotations[i][j - 1],
-                    annotations[i][j],
-                    (0, 255, 0),
-                    12,
-                )
 
-    # Adding WebCam Img to the Slide
-    imgSmall = cv2.resize(img, (ws, hs))
-    h, w, _ = SlideCurrent.shape
-    SlideCurrent[0:hs, w - ws : w] = imgSmall
-
-    cv2.imshow("Slides", SlideCurrent)
-    cv2.imshow("Image", img)
-
-    Key = cv2.waitKey(1)
-    if Key == ord("q"):
-        break
+if __name__ == "__main__":
+    presentation = Presentation()
+    presentation.run()
