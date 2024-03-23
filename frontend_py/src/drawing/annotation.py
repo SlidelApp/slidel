@@ -27,7 +27,7 @@ pathSlides = sorted(os.listdir(FolderPath), key=len)
 
 # Variables
 SlideNum = 0
-gestureThreshold = 250
+gesture_threshold = int(webcam_height * 0.65)
 button_pressed = False
 button_counter = 0
 button_delay = 30
@@ -44,7 +44,7 @@ while True:  # noqa
     # To flip the img 1= horizontal , 0= vertical ; but here right becomes left and vice versa.
     img = cv2.flip(img, 1)
     img = cv2.line(
-        img, (0, gestureThreshold), (width, gestureThreshold), (100, 255, 205), 10
+        img, (0, gesture_threshold), (width, gesture_threshold), (100, 255, 205), 10
     )
 
     # Here FolderPath is the Project Directory
@@ -71,7 +71,7 @@ while True:  # noqa
         y_val = int(np.interp(lm_list[8][1], [height_margin, webcam_height - height_margin], [0, height]))
         index_finger = x_val, y_val
 
-        if cy <= gestureThreshold:  # If hand is above the gestureThreshold
+        if cy <= gesture_threshold:  # If hand is above the gesture_threshold
             # Gesture-0 Left
             if fingers == [1, 0, 0, 0, 0]:
                 print("Left")
