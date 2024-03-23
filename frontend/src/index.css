@@ -4,11 +4,13 @@ body {
   font-family: 'Arial', sans-serif;
   background-color: #19222A;
   color: #fff;
+  align-self: center;
 }
 
 .maincontainer {
   margin: 10px;
   padding: 10px;
+  height: 100%;
   border: 2px solid #FFE603;
   border-radius: 5px;
 }
@@ -25,7 +27,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 60px;
+  padding: 10px 10px 10px 40px; 
   align-items: center;
 }
 
@@ -146,6 +148,7 @@ button {
   color: #000000;
   cursor: pointer;
   transition: transform 0.3s ease; 
+  margin-top: 100px;
 }
 #mybutton {
   margin-bottom: 0 !important;
@@ -171,9 +174,34 @@ button:hover {
   font-weight: 800;
 }
 
+.slider {
+  width: 80%;
+}
+
+/* @media (max-width: 1500px) {
+  .maincontainer {
+    width: 98%;
+    height: 670px;
+  }
+}
+
+@media (max-height: 650px) {
+  .slider {
+    width: 75%;
+  }
+
+  button{
+    margin-top: 100px;
+  }
+}
+
 @media (max-width: 1000px) {
   .slider {
     width: 70%;
+  }
+
+  button{
+    margin-top: 90px;
   }
 }
 
@@ -181,10 +209,65 @@ button:hover {
   .slider {
     width: 60%;
   }
+
+  button{
+    margin-top: 80px;
+  }
 }
 
 @media (max-width: 576px) {
   .slider {
     width: 50%;
+  }
+
+  button{
+    margin-top: 0p7x;
+  }
+} */
+
+@media (max-width: 1500px) {
+  .maincontainer {
+    width: 98%;
+    height: 670px;
+  }
+}
+
+@media (max-height: 650px) {
+  .slider {
+    width: 75%;
+  }
+
+  button{
+    margin-top: 100px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .slider {
+    width: 70%;
+  }
+
+  button{
+    margin-top: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider {
+    width: 60%;
+  }
+
+  button{
+    margin-top: 80px;
+  }
+}
+
+@media (max-width: 576px) {
+  .slider {
+    width: 50%;
+  }
+
+  button{
+    margin-top: 70px;
   }
 }
