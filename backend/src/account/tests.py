@@ -1,7 +1,7 @@
 from django.test import TestCase  # noqa
 import pytest
 from django.contrib.auth.models import User
-from myapp.models import UserSettings, CustomUser
+from models import UserSettings, CustomUser
 
 @pytest.mark.django_db
 def test_user_settings_creation():
