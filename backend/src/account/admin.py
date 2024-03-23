@@ -1,7 +1,7 @@
 from django.contrib import admin  # noqa
 from django.contrib.auth.admin import UserAdmin
 
-from account.models import CustomUser, UserSettings, Subscription
+from account.models import CustomUser, Subscription, UserSettings
 
 # Register your models here.
 

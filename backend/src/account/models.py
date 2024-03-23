@@ -18,11 +18,12 @@ class CustomUser(AbstractUser):
         related_query_name="user",
     )
 
+
 class Subscription(models.Model):
 
     STATUS_CHOICES = [
-        ('active', 'Active'),
-        ('expired', 'Expired'),
+        ("active", "Active"),
+        ("expired", "Expired"),
     ]
 
     name = models.CharField(max_length=100)
@@ -50,7 +51,6 @@ class UserSettings(models.Model):
     profile_picture = models.ImageField(
         upload_to="profile_pictures/", default="default_profile_picture.jpg"
     )
-
 
     def __str__(self):
         return f"Settings for {self.user.username}"
