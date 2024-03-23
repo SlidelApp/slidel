@@ -16,6 +16,31 @@ body {
   border-radius: 5px;
 }
 
+body#login {
+  background-image: url('Assets/image.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+section.login {
+  border-radius: 0.3rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+section.login>.row {
+  height: 100vh;
+}
+
+section.login #login-logo {
+  max-width: 300px;
+}
+
+div.login-form {
+  background-color: #1E1E1E;
+}
+  
 .header {
   text-align: center;
   background-color: #FFE603;
@@ -223,3 +248,4 @@ button:hover {
     width: 50%;
   }
 }
+
