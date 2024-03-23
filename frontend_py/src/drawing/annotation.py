@@ -15,6 +15,7 @@ hs, ws = 120, 213
 cam = cv2.VideoCapture(0)
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, ws)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, hs)
+# sometimes depending on the webcam the above won't set
 webcam_width = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
 webcam_height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
