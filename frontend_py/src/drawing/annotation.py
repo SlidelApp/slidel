@@ -66,9 +66,21 @@ while True:  # noqa
         # Constrain Region for pointer to be a small square on right side
         # np.interp(variable[fitting-size],[actual_size])
         width_margin = webcam_width * 0.1
-        x_val = int(np.interp(lm_list[8][0], [ webcam_width // 2, webcam_width - width_margin ], [0, width]))
+        x_val = int(
+            np.interp(
+                lm_list[8][0],
+                [webcam_width // 2, webcam_width - width_margin],
+                [0, width],
+            )
+        )
         height_margin = webcam_height * 0.2
-        y_val = int(np.interp(lm_list[8][1], [height_margin, webcam_height - height_margin], [0, height]))
+        y_val = int(
+            np.interp(
+                lm_list[8][1],
+                [height_margin, webcam_height - height_margin],
+                [0, height],
+            )
+        )
         index_finger = x_val, y_val
 
         if cy <= gesture_threshold:  # If hand is above the gesture_threshold
@@ -143,7 +155,7 @@ while True:  # noqa
     h, w, _ = SlideCurrent.shape
     SlideCurrent[0:hs, w - ws : w] = imgSmall
 
-    cv2.namedWindow('Slides', cv2.WINDOW_NORMAL)
+    cv2.namedWindow("Slides", cv2.WINDOW_NORMAL)
     cv2.imshow("Slides", SlideCurrent)
     cv2.imshow("Image", img)
 
