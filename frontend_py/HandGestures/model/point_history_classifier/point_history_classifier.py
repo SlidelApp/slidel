@@ -7,7 +7,7 @@ class PointHistoryClassifier:
 
     def __init__(
         self,
-        model_path="HandGestures\\model\\point_history_classifier\\point_history_classifier.tflite",
+        model_path="frontend_py\\HandGestures\\model\\point_history_classifier\\point_history_classifier.tflite",
         score_th=0.5,
         invalid_value=0,
         num_threads=1,
