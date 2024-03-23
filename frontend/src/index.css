@@ -20,6 +20,7 @@ body {
 }
 
 .launchheader {
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   text-align: left;
   display: flex;
   flex-direction: row;
@@ -29,6 +30,7 @@ body {
 }
 
 .profile{
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   margin: 10px;
   padding: 10px;
   border: 2px solid #FFE603;
@@ -88,7 +90,7 @@ body {
 
 .configurations{
   width: 35%;
-  height: 350px;
+  /* height: 450px; */
   border-radius: 5px;
   border: 3px solid #FFE603;
   background-color: #424549;
@@ -98,8 +100,16 @@ body {
   margin-left: 20px;
   margin-right: 20px;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 70px;
   padding-right: 5px;
+}
+
+.button-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 0px 0px 0px;
 }
 
 .configurations label{
@@ -137,6 +147,10 @@ button {
   cursor: pointer;
   transition: transform 0.3s ease; 
 }
+#mybutton {
+  margin-bottom: 0 !important;
+}
+
 
 button:hover {
   transform: scale(1.1); 
@@ -152,6 +166,25 @@ button:hover {
   margin-right: 50px;
 }
 
-#homeButton, #deleteButton{
+#homeButton, #deleteButton, #saveButton{
   width: 150px;
+  font-weight: 800;
+}
+
+@media (max-width: 1000px) {
+  .slider {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider {
+    width: 60%;
+  }
+}
+
+@media (max-width: 576px) {
+  .slider {
+    width: 50%;
+  }
 }
