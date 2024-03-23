@@ -5,15 +5,17 @@ import numpy as np
 from handtrackingmode import HandDetector
 
 # Parameters
-width, height = 1280, 720
+width, height = 1920, 1080
 FolderPath = "Presentation"  # Directory in which Presentation Slides are kept
 hs, ws = 120, 213
 
 # Cam_Setup
 
 cam = cv2.VideoCapture(0)
-cam.set(3, ws)
-cam.set(4, hs)
+cam.set(cv2.CAP_PROP_FRAME_WIDTH, ws)
+cam.set(cv2.CAP_PROP_FRAME_HEIGHT, hs)
+webcam_width = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
+webcam_height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 # Presentation_Slides -> Getting the list of the slide names and sorting them according to
 # their length [ length of the slide name ]
@@ -23,7 +25,7 @@ pathSlides = sorted(os.listdir(FolderPath), key=len)
 
 # Variables
 SlideNum = 0
-gestureThreshold = 300
+gestureThreshold = 250
 button_pressed = False
 button_counter = 0
 button_delay = 30
@@ -59,10 +61,12 @@ while True:  # noqa
         # land_mark_list
         lm_list = hand["lmList"]
 
-        # Constrain Region for pointer
+        # Constrain Region for pointer to be a small square on right side
         # np.interp(variable[fitting-size],[actual_size])
-        x_val = int(np.interp(lm_list[8][0], [0, width // 4], [0, width]))
-        y_val = int(np.interp(lm_list[8][1], [0, height - 500], [0, height]))
+        width_margin = webcam_width * 0.1
+        x_val = int(np.interp(lm_list[8][0], [ webcam_width // 2, webcam_width - width_margin ], [0, width]))
+        height_margin = webcam_height * 0.2
+        y_val = int(np.interp(lm_list[8][1], [height_margin, webcam_height - height_margin], [0, height]))
         index_finger = x_val, y_val
 
         if cy <= gestureThreshold:  # If hand is above the gestureThreshold
@@ -137,6 +141,7 @@ while True:  # noqa
     h, w, _ = SlideCurrent.shape
     SlideCurrent[0:hs, w - ws : w] = imgSmall
 
+    cv2.namedWindow('Slides', cv2.WINDOW_NORMAL)
     cv2.imshow("Slides", SlideCurrent)
     cv2.imshow("Image", img)
 
