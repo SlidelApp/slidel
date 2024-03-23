@@ -1,14 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Default Title{% endblock %}</title>
+    <title>Create User Account</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
 </head>
+<style>
+    .create-account-form {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 30px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .create-account-form h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .create-account-form form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .create-account-form .form-group {
+        margin-bottom: 20px;
+    }
+
+    .create-account-form label {
+        font-weight: bold;
+        display: block;
+    }
+
+    .create-account-form input[type="text"],
+    .create-account-form input[type="email"],
+    .create-account-form input[type="password"] {
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: calc(100% - 26px);
+    }
+
+    .create-account-form button {
+        padding: 12px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+    }
+
+    .create-account-form button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
 <body>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
 </body>
+
 </html>
