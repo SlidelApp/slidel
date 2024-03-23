@@ -7,7 +7,7 @@ class KeyPointClassifier:
 
     def __init__(
         self,
-        model_path=r"HandGestures/model/keypoint_classifier/keypoint_classifier.tflite",
+        model_path=r"frontend_py/HandGestures/model/keypoint_classifier/keypoint_classifier.tflite",
         num_threads=1,
     ):
         self.interpreter = tf.lite.Interpreter(
