@@ -1,6 +1,4 @@
 # test_login.py
-
-import pytest
 from login import login
 
 
