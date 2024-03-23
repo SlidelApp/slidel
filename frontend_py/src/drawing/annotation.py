@@ -30,7 +30,7 @@ button_pressed = False
 button_counter = 0
 button_delay = 30
 annotations = [[]]
-annotation_number = -1
+annotation_number = 0
 annotation_start = False
 
 # Hand_Detector
@@ -77,7 +77,7 @@ while True:  # noqa
                 if SlideNum > 0:
                     button_pressed = True
                     annotations = [[]]
-                    annotation_number = -1
+                    annotation_number = 0
                     annotation_start = False
 
                     SlideNum -= 1
@@ -88,7 +88,7 @@ while True:  # noqa
                 if SlideNum < len(pathSlides) - 1:
                     button_pressed = True
                     annotations = [[]]
-                    annotation_number = -1
+                    annotation_number = 0
                     annotation_start = False
 
                     SlideNum += 1
