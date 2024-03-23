@@ -1,0 +1,49 @@
+label {
+  font-weight: bold;
+  font-size: 16px;
+  color: #424549;
+  display: block;
+  margin-bottom: 5px;
+  margin-left: 50px;
+}
+
+input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #424549;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  width: 250px;
+  margin-left: 50px;
+  margin-right: 120px;
+}
+
+button {
+  padding: 7px 25px;
+  font-size: 12px;
+  border: 1px solid #FFE603;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  background-color: #FFE603;
+  color: #000000;
+  cursor: pointer;
+  transition: transform 0.3s ease; 
+}
+
+button:hover {
+  transform: scale(1.1); 
+}
+
+.btn-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+#homeButton {
+  display: inline-block;
+  margin-right: 50px;
+}
+
+#homeButton, #deleteButton{
+  width: 150px;
+}
