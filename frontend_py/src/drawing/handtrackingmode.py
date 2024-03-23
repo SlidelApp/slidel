@@ -1,4 +1,3 @@
-
 import math
 
 import cv2
@@ -6,7 +5,7 @@ import mediapipe as mp
 
 
 class HandDetector:
-   
+
     def __init__(
         self,
         staticMode=False,
@@ -15,7 +14,7 @@ class HandDetector:
         detectionCon=0.5,
         minTrackCon=0.5,
     ):
-        
+
         self.staticMode = staticMode
         self.maxHands = maxHands
         self.modelComplexity = modelComplexity
@@ -36,7 +35,7 @@ class HandDetector:
         self.lmList = []
 
     def findHands(self, img, draw=True, flipType=True):
-        
+
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.hands.process(imgRGB)
         allHands = []
@@ -101,7 +100,7 @@ class HandDetector:
         return allHands, img
 
     def fingersUp(self, myHand):
-        
+
         fingers = []
         myHandType = myHand["type"]
         myLmList = myHand["lmList"]
@@ -128,7 +127,6 @@ class HandDetector:
         return fingers
 
     def findDistance(self, p1, p2, img=None, color=(255, 0, 255), scale=5):
-        
 
         x1, y1 = p1
         x2, y2 = p2

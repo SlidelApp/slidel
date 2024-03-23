@@ -1,6 +1,7 @@
-import numpy as np
-import cv2
 import os
+
+import cv2
+import numpy as np
 from handtrackingmode import HandDetector
 
 # Parameters
@@ -14,7 +15,8 @@ cam = cv2.VideoCapture(0)
 cam.set(3, ws)
 cam.set(4, hs)
 
-# Presentation_Slides -> Getting the list of the slide names and sorting them according to their length [ length of the slide name ]
+# Presentation_Slides -> Getting the list of the slide names and sorting them according to
+# their length [ length of the slide name ]
 # sorted_fuction
 pathSlides = sorted(os.listdir(FolderPath), key=len)
 # print(pathSlides)

@@ -1,5 +1,4 @@
 import cv2
-import cv2
 import numpy as np
 
 
@@ -60,7 +59,7 @@ class KeystoneCorrection:
 
         return X, Y
 
-    def run(self, frame, success,x,y):
+    def run(self, frame, success, x, y):
 
         if success:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -78,7 +77,6 @@ class KeystoneCorrection:
                 pts1.append(t)
 
             pts1 = np.float32(pts1)
-            
 
             # Calculate keystone correction
             X, Y = self.keystone_correction(
@@ -91,9 +89,10 @@ class KeystoneCorrection:
                 pts1[2][0],
                 pts1[2][1],
                 pts1[3][0],
-                pts1[3][1]
+                pts1[3][1],
             )
-            print(X,Y)
+            print(X, Y)
+
 
 #     def process_video(self):
 #         vidcap = cv2.VideoCapture(self.video_path)

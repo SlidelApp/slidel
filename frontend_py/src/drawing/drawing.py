@@ -1,7 +1,7 @@
-import numpy as np
 import cv2 as cv
-from handtrackingmodel import *
 import handtrackingmodel as htm
+import numpy as np
+from handtrackingmodel import *
 
 
 class HandDrawing:

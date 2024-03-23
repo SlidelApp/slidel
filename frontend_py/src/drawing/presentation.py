@@ -1,6 +1,7 @@
-import numpy as np
-import cv2
 import os
+
+import cv2
+import numpy as np
 from handtrackingmode import HandDetector
 
 
