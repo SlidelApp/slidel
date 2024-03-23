@@ -1,5 +1,6 @@
 # login.py
 
+
 def login(username, password):
     # Predefined set of valid credentials
     valid_username = "user123"
