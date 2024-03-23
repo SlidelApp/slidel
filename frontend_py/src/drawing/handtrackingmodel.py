@@ -45,7 +45,7 @@ class HandDetector:
 
         return img
 
-    def draw_landmarks(image, landmark_point):
+    def draw_landmarks(image, landmark_point):  # noqa C901
 
         if len(landmark_point) > 0:
 

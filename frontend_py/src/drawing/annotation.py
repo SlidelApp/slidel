@@ -35,7 +35,7 @@ annotation_start = False
 # Here, detectionCon = the code will run if it is 80% of the oblect being a hand.
 detector = HandDetector(detectionCon=0.8, maxHands=1)
 
-while True:
+while True:  # noqa
     success, img = cam.read()
     # To flip the img 1= horizontal , 0= vertical ; but here right becomes left and vice versa.
     img = cv2.flip(img, 1)

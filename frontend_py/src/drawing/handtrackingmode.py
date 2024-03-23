@@ -45,7 +45,7 @@ class HandDetector:
                 self.results.multi_handedness, self.results.multi_hand_landmarks
             ):
                 myHand = {}
-                ## lmList
+                # lmList
                 mylmList = []
                 xList = []
                 yList = []
@@ -55,7 +55,7 @@ class HandDetector:
                     xList.append(px)
                     yList.append(py)
 
-                ## bbox
+                # bbox
                 xmin, xmax = min(xList), max(xList)
                 ymin, ymax = min(yList), max(yList)
                 boxW, boxH = xmax - xmin, ymax - ymin
@@ -75,7 +75,7 @@ class HandDetector:
                     myHand["type"] = handType.classification[0].label
                 allHands.append(myHand)
 
-                ## draw
+                # draw
                 if draw:
                     self.mpDraw.draw_landmarks(
                         img, handLms, self.mpHands.HAND_CONNECTIONS
@@ -172,11 +172,6 @@ def main():
             # Information for the first hand detected
             hand1 = hands[0]  # Get the first hand detected
             lmList1 = hand1["lmList"]  # List of 21 landmarks for the first hand
-            bbox1 = hand1[
-                "bbox"
-            ]  # Bounding box around the first hand (x,y,w,h coordinates)
-            center1 = hand1["center"]  # Center coordinates of the first hand
-            handType1 = hand1["type"]  # Type of the first hand ("Left" or "Right")
 
             # Count the number of fingers up for the first hand
             fingers1 = detector.fingersUp(hand1)
@@ -194,9 +189,6 @@ def main():
                 # Information for the second hand
                 hand2 = hands[1]
                 lmList2 = hand2["lmList"]
-                bbox2 = hand2["bbox"]
-                center2 = hand2["center"]
-                handType2 = hand2["type"]
 
                 # Count the number of fingers up for the second hand
                 fingers2 = detector.fingersUp(hand2)
