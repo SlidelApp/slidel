@@ -5,6 +5,7 @@ import numpy as np
 from handtrackingmode import HandDetector
 
 # Parameters
+# TODO: Get image height and width dynamically
 width, height = 1920, 1080
 FolderPath = "Presentation"  # Directory in which Presentation Slides are kept
 hs, ws = 120, 213
