@@ -59,3 +59,39 @@ function confirmDeleteAccount() {
     console.log('Deletion Cancelled');
   }
 }
+
+fetch('http://localhost:8000/api/settings-endpoint/', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    
+  },
+})
+  .then(response => response.json())
+  .then(data => {
+   
+    const userElement = document.querySelector('.user h2');
+    userElement.innerText = data.display_name;
+  })
+  .catch((error) => console.error('Error:', error));
+
+
+const newSettings = { display_name: 'New Display Name' };
+
+
+
+fetch('http://localhost:8000/api/settings-endpoint/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    // 'Authorization': 'Bearer ' + token // if you use token authentication
+  },
+  body: JSON.stringify(newSettings)
+})
+  .then(response => response.json())
+  .then(data => {
+    // Update the display name
+    const userElement = document.querySelector('.user h2');
+    userElement.innerText = data.display_name;
+  })
+  .catch((error) => console.error('Error:', error));
