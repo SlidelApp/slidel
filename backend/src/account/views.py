@@ -6,6 +6,31 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import UserSettings
+
+class SettingsEndpoint(APIView):
+
+    def get(self, request):
+        settings = UserSettings.objects.get(user=request.user)
+        return Response(
+            {
+                "display_name": settings.display_name,
+                "profile_picture": settings.profile_picture.url,
+            }
+        )
+    
+    def post(self, request):
+        settings = UserSettings.objects.get(user=request.user)
+        settings.display_name = request.data["display_name"]
+        settings.save()
+        return Response(
+            {
+                "display_name": settings.display_name,
+                "profile_picture": settings.profile_picture.url,
+            }
+        )
 
 
 def create_account(request):
