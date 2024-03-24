@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <img id="video" width="640" height="480">
+  <p>SECOND PAGE</p>
+</body>
+<script>
+  console.log("ELEG")
+  // handle video stream automatically re-connecting
+  var video = document.getElementById('video');
+  video.setAttribute('src', '');
+  video.setAttribute('src', 'http://localhost:5000/video_feed');
+</script>
+</html>
