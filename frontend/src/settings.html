@@ -2,40 +2,51 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World!</title>
+    <title>Settings</title>
 
     <!-- bootstrap -->
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="settings.css">
+    <!-- <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="settingsStyles.css">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
   </head>
   <body>
-    <div class="header">
-      <h1>My Profile</h1>
+    <div class="container">
+      <div class="left-panel">
+        <img src="assets/logo.png" alt="Logo" class="logo">
+      </div>
+      <div class="right-panel">
+        <div class="settings_header">
+          <h1>My Profile</h1>
+        </div>
+        <div class="yellow-box"></div>
+        <div class="user">
+          <h2><center>Eren Jaegar</center></h2>
+        </div>
+        
+        <div id="form-container">
+          <label for="displayName">Display Name</label>
+          <input type="text" id="displayName" value="Eren Jaegar" readonly>
+          <button id="editDisplayName">Edit</button>
+    
+          <label for="username">Username</label>
+          <input type="text" id="username" value="erenjaegar2001" readonly>
+          <button id="editUsername">Edit</button>
+    
+          <label for="password">Password</label>
+          <input type="password" id="password" value="pass1234" readonly>
+          <button id="editPassword">Edit</button>
+        </div>
+    
+        <div class="btn-container">
+          <button id="homeButton">Home</button>
+          <button id="deleteButton">Delete Account</button>
+        </div>
+      </div>
     </div>
     
-    <div id="container">
-      <label for="displayName">Display Name</label>
-      <input type="text" id="displayName" value="John Doe" readonly>
-      <button id="editDisplayName">Edit</button>
-
-      <label for="username">Username</label>
-      <input type="text" id="username" value="johndoe" readonly>
-      <button id="editUsername">Edit</button>
-
-      <label for="password">Password</label>
-      <input type="password" id="password" value="pass1234" readonly>
-      <button id="editPassword">Edit</button>
-    </div>
-
-    <div class="btn-container">
-      <button id="homeButton" onclick="window.location.href = '../index.html'">Home</button>
-      <button id="deleteButton">Delete Account</button>
-    </div>
-
     <script type="module" src="/src/renderer.js"></script>
 
      <!-- Add the Bootstrap JavaScript file -->
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   </body>
-</html>
+</html> 
