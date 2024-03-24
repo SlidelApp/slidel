@@ -23,25 +23,8 @@
 
     <script type="module" src="/src/renderer.js"></script>
 
-    <!-- Button to insert a sentence -->
-    <button id="insertSentenceBtn" class="btn btn-primary">Insert Sentence</button>
-
-    <script>
-      // Establish WebSocket connection
-      const socket = new WebSocket('ws://localhost:8000/events');
-
-      // JavaScript function to insert a sentence in the body
-      function insertSentence() {
-        // Create a new <p> element with the sentence
-        var sentence = document.createElement('p');
-        sentence.textContent = "This is a new sentence.";
-        // Insert the sentence into the body
-        document.body.appendChild(sentence);
-      }
-
-      // Event listener for the button click
-      document.getElementById('insertSentenceBtn').addEventListener('click', insertSentence);
-    </script>
+     <!-- Add the Bootstrap JavaScript file -->
+     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
 
   </body>
 </html>
