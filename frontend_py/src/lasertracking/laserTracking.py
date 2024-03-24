@@ -61,3 +61,35 @@ while calibrating:
             continue
 
 print("Calibration complete")
+
+saved = np.full((whiteboard_size[1], whiteboard_size[0]), 255, dtype=np.uint8)
+cv.createTrackbar("saving?", "whiteboard", 0, 1, lambda x: None)
+
+while True:
+    video.set(cv.CAP_PROP_BRIGHTNESS, cv.getTrackbarPos("brightness", "camera"))
+
+    ret, frame = video.read()
+    bw = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    _, bw = cv.threshold(
+        bw, cv.getTrackbarPos("threshold", "camera"), 255, cv.THRESH_BINARY
+    )
+
+    render = cv.warpPerspective(bw, H, whiteboard_size)
+
+    saved = cv.bitwise_and(saved, saved, mask=cv.bitwise_not(render))
+    outline = np.full((whiteboard_size[1], whiteboard_size[0]), 0, dtype=np.uint8)
+    cv.rectangle(outline, (0, 0, whiteboard_size[0], whiteboard_size[1]), 255, 25)
+    outline = cv.warpPerspective(
+        outline, H, frame.shape[:2][::-1], flags=cv.WARP_INVERSE_MAP
+    )
+    bw = bw + outline
+    if cv.getTrackbarPos("saving?", "whiteboard") == 0:
+        saved = np.full((whiteboard_size[1], whiteboard_size[0]), 255, dtype=np.uint8)
+
+    cv.imshow("whiteboard", saved)
+    cv.imshow("camera", bw)
+    if cv.waitKey(1) == ord("q"):
+        break
+
+cv.destroyAllWindows()
+video.release()
