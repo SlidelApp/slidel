@@ -15,13 +15,13 @@ body {
   width: 100%;
 }
 
-.header {
+.settings_header{
   text-align: center;
   background-color: #19222A;
   padding: 40px;
 }
 
-.header h1 {
+.settings_header h1 {
   color: white;
   font-weight: bold;
 }
