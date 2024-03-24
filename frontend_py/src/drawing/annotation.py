@@ -297,4 +297,13 @@ def generate_frames(camera):
         yield b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n--frame\r\n"
 
 
-Camera()
+@app.route("/video_feed")
+def video_feed():
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    return Response(
+        generate_frames(Camera()), mimetype="multipart/x-mixed-replace; boundary=frame"
+    )
+
+
+if __name__ == "__main__":
+    app.run(host="localhost", port="5000")
