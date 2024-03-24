@@ -44,6 +44,14 @@ cd frontend
 yarn start
 ```
 
+#### Frontend Flask Server
+
+```bash
+cd frontend_py/src/drawing
+poetry install
+poetry run python annotation.py
+```
+
 ### Linting
 
 #### Backend pre-commit linting

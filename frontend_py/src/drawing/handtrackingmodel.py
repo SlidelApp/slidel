@@ -1,6 +1,7 @@
+import time
+
 import cv2 as cv
 import mediapipe as mp
-import time
 
 
 class HandDetector:
@@ -12,7 +13,6 @@ class HandDetector:
         model_complexity=1,
         detection_confidence=0.5,
         tracking_confidence=0.5,
-
     ):
         self.mode = mode
         self.max_hands = max_hands
@@ -29,8 +29,7 @@ class HandDetector:
             self.tracking_confidence,
         )
         self.mpDraw = mp.solutions.drawing_utils
-        self.tipId = [4,8,12,16,20]
-
+        self.tipId = [4, 8, 12, 16, 20]
 
     def findHands(self, img, draw=True):
         imgRGB = cv.cvtColor(img, cv.COLOR_BGRA2RGB)
@@ -45,12 +44,14 @@ class HandDetector:
                     )
 
         return img
-    
-    def draw_landmarks(image, landmark_point):
-    
+
+    def draw_landmarks(image, landmark_point):  # noqa C901
+
         if len(landmark_point) > 0:
 
-            cv.line(image, tuple(landmark_point[2]), tuple(landmark_point[3]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[2]), tuple(landmark_point[3]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[2]),
@@ -58,7 +59,9 @@ class HandDetector:
                 (255, 255, 255),
                 2,
             )
-            cv.line(image, tuple(landmark_point[3]), tuple(landmark_point[4]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[3]), tuple(landmark_point[4]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[3]),
@@ -67,7 +70,9 @@ class HandDetector:
                 2,
             )
 
-            cv.line(image, tuple(landmark_point[5]), tuple(landmark_point[6]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[5]), tuple(landmark_point[6]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[5]),
@@ -75,7 +80,9 @@ class HandDetector:
                 (255, 255, 255),
                 2,
             )
-            cv.line(image, tuple(landmark_point[6]), tuple(landmark_point[7]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[6]), tuple(landmark_point[7]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[6]),
@@ -83,7 +90,9 @@ class HandDetector:
                 (255, 255, 255),
                 2,
             )
-            cv.line(image, tuple(landmark_point[7]), tuple(landmark_point[8]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[7]), tuple(landmark_point[8]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[7]),
@@ -103,7 +112,11 @@ class HandDetector:
                 2,
             )
             cv.line(
-                image, tuple(landmark_point[10]), tuple(landmark_point[11]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[10]),
+                tuple(landmark_point[11]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -113,7 +126,11 @@ class HandDetector:
                 2,
             )
             cv.line(
-                image, tuple(landmark_point[11]), tuple(landmark_point[12]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[11]),
+                tuple(landmark_point[12]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -124,7 +141,11 @@ class HandDetector:
             )
 
             cv.line(
-                image, tuple(landmark_point[13]), tuple(landmark_point[14]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[13]),
+                tuple(landmark_point[14]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -134,7 +155,11 @@ class HandDetector:
                 2,
             )
             cv.line(
-                image, tuple(landmark_point[14]), tuple(landmark_point[15]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[14]),
+                tuple(landmark_point[15]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -144,7 +169,11 @@ class HandDetector:
                 2,
             )
             cv.line(
-                image, tuple(landmark_point[15]), tuple(landmark_point[16]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[15]),
+                tuple(landmark_point[16]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -155,7 +184,11 @@ class HandDetector:
             )
 
             cv.line(
-                image, tuple(landmark_point[17]), tuple(landmark_point[18]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[17]),
+                tuple(landmark_point[18]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -165,7 +198,11 @@ class HandDetector:
                 2,
             )
             cv.line(
-                image, tuple(landmark_point[18]), tuple(landmark_point[19]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[18]),
+                tuple(landmark_point[19]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -175,7 +212,11 @@ class HandDetector:
                 2,
             )
             cv.line(
-                image, tuple(landmark_point[19]), tuple(landmark_point[20]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[19]),
+                tuple(landmark_point[20]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -185,7 +226,9 @@ class HandDetector:
                 2,
             )
 
-            cv.line(image, tuple(landmark_point[0]), tuple(landmark_point[1]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[0]), tuple(landmark_point[1]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[0]),
@@ -193,7 +236,9 @@ class HandDetector:
                 (255, 255, 255),
                 2,
             )
-            cv.line(image, tuple(landmark_point[1]), tuple(landmark_point[2]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[1]), tuple(landmark_point[2]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[1]),
@@ -201,7 +246,9 @@ class HandDetector:
                 (255, 255, 255),
                 2,
             )
-            cv.line(image, tuple(landmark_point[2]), tuple(landmark_point[5]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[2]), tuple(landmark_point[5]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[2]),
@@ -209,7 +256,9 @@ class HandDetector:
                 (255, 255, 255),
                 2,
             )
-            cv.line(image, tuple(landmark_point[5]), tuple(landmark_point[9]), (0, 0, 0), 6)
+            cv.line(
+                image, tuple(landmark_point[5]), tuple(landmark_point[9]), (0, 0, 0), 6
+            )
             cv.line(
                 image,
                 tuple(landmark_point[5]),
@@ -228,7 +277,11 @@ class HandDetector:
                 2,
             )
             cv.line(
-                image, tuple(landmark_point[13]), tuple(landmark_point[17]), (0, 0, 0), 6
+                image,
+                tuple(landmark_point[13]),
+                tuple(landmark_point[17]),
+                (0, 0, 0),
+                6,
             )
             cv.line(
                 image,
@@ -325,11 +378,11 @@ class HandDetector:
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
 
-                lmList.append([Id,cx,cy])
-                
+                lmList.append([Id, cx, cy])
+
         return lmList
-    
-    def figersUp(self,lmlist):
+
+    def figersUp(self, lmlist):
         fingers = []
 
         if lmlist[self.tipId[0]][1] > lmlist[self.tipId[0] - 1][1]:
@@ -337,15 +390,12 @@ class HandDetector:
         else:
             fingers.append(0)
 
-        
-        for id in range(1,5):
-            if lmlist[self.tipId[id]][2] < lmlist[self.tipId[id]-2][2]:
+        for id in range(1, 5):
+            if lmlist[self.tipId[id]][2] < lmlist[self.tipId[id] - 2][2]:
                 fingers.append(1)
             else:
                 fingers.append(0)
         return fingers
-    
-    
 
 
 def main():
@@ -369,7 +419,7 @@ def main():
         )
 
         cv.imshow("Hand Tracking", img)
-        cv.waitKey(1) & 0xFF == ord('q')
+        cv.waitKey(1) & 0xFF == ord("q")
 
 
 if __name__ == "__main__":

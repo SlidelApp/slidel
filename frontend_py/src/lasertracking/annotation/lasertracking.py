@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-
 # Capture video from webcam
 cap = cv2.VideoCapture(0)
 
@@ -18,10 +17,14 @@ while True:
         diff_frame = cv2.morphologyEx(diff_frame, cv2.MORPH_OPEN, kernel)
 
         # Binarize the image
-        _, binary_frame = cv2.threshold(diff_frame, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        _, binary_frame = cv2.threshold(
+            diff_frame, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+        )
 
         # Find the contours
-        contours, _ = cv2.findContours(binary_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(
+            binary_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+        )
 
         # Find the largest contour (assuming it's the ROI)
         roi_contour = max(contours, key=cv2.contourArea)
@@ -52,9 +55,19 @@ while True:
 
         return a, b, c, d, e, f, g, h
 
-
     def keystone_correction(
-        x, y, x0, y0, x1, y1, x2, y2, x3, y3, resolution_width=1024, resolution_height=768
+        x,
+        y,
+        x0,
+        y0,
+        x1,
+        y1,
+        x2,
+        y2,
+        x3,
+        y3,
+        resolution_width=1024,
+        resolution_height=768,
     ):
         a, b, c, d, e, f, g, h = calculate_transformation_coefficients(
             x0, y0, x1, y1, x2, y2, x3, y3
@@ -66,7 +79,7 @@ while True:
         Y = v * resolution_height
 
         return X, Y
-    
+
     def adapt_environment(frame, laser_region_threshold):
         num_pixels = frame.shape[0] * frame.shape[1]
         exposure = 0
@@ -81,8 +94,14 @@ while True:
 
             # Check if the number of pixels is within the desired range
             laser_region_pixels = num_pixels - num_pixels_below_threshold
-            laser_region_error = 0.1 * laser_region_pixels  # Assuming 10% error tolerance
-            if laser_region_pixels - laser_region_error <= num_pixels_below_threshold <= laser_region_pixels + laser_region_error:
+            laser_region_error = (
+                0.1 * laser_region_pixels
+            )  # Assuming 10% error tolerance
+            if (
+                laser_region_pixels - laser_region_error
+                <= num_pixels_below_threshold
+                <= laser_region_pixels + laser_region_error
+            ):
                 break
 
             # Adjust the exposure
@@ -97,11 +116,13 @@ while True:
 
     # Implement laser spot detection and cursor movement
     def detect_laser_spot(frame, hue_min, hue_max, sat_min, sat_max, val_min, val_max):
-            # Convert the frame to HSV color space
+        # Convert the frame to HSV color space
         hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         # Threshold the frame based on the specified color ranges
-        mask = cv2.inRange(hsv_frame, (hue_min, sat_min, val_min), (hue_max, sat_max, val_max))
+        mask = cv2.inRange(
+            hsv_frame, (hue_min, sat_min, val_min), (hue_max, sat_max, val_max)
+        )
 
         # Find the contours in the mask
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -132,9 +153,20 @@ while True:
         # (You need to use a library or system API to control the cursor position)
         pass
 
-    def laser_spot_position_estimation(frame, hue_min, hue_max, sat_min, sat_max, val_min, val_max, transformation_matrix):
+    def laser_spot_position_estimation(
+        frame,
+        hue_min,
+        hue_max,
+        sat_min,
+        sat_max,
+        val_min,
+        val_max,
+        transformation_matrix,
+    ):
         # Detect the laser spot in the frame
-        cx, cy = detect_laser_spot(frame, hue_min, hue_max, sat_min, sat_max, val_min, val_max)
+        cx, cy = detect_laser_spot(
+            frame, hue_min, hue_max, sat_min, sat_max, val_min, val_max
+        )
 
         if cx is not None and cy is not None:
             # Transform the laser spot coordinates to display coordinates
