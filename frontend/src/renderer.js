@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const editPasswordButton = document.getElementById('editPassword');
   const homeButton = document.getElementById('homeButton');
   const deleteButton = document.getElementById('deleteButton');
+  const file = document.getElementById('file');
 
   const displayNameInput = document.getElementById('displayName');
   const usernameInput = document.getElementById('username');
@@ -45,6 +46,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   homeButton.addEventListener('click', () => console.log('Going to Home Page'));
   deleteButton.addEventListener('click', () => confirmDeleteAccount());
+
+  const { spawn } = require('child_process');
+
+  file.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    console.log(file);
+
+   
+    const python = spawn('python', ['frontend_qt/ui.py/pdf2image.py', file.path, 'output_folder']);
+
+    python.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+    });
+
+    python.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    python.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
+  });
+
 });
 
 function toggleEditMode(input) {
