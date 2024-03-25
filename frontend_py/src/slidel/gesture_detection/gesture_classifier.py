@@ -1,13 +1,15 @@
-import numpy as np
-import tensorflow as tf
-import itertools
 import copy
-
+import itertools
 
 # get path of current file
 import os
+
+import numpy as np
+import tensorflow as tf
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_dir, "keypoint_classifier.tflite")
+
 
 class KeyPointClassifier:
 
@@ -83,9 +85,11 @@ class HandGestureClassifier:
         temp_landmark_list = list(map(normalize_, temp_landmark_list))
 
         return temp_landmark_list
-    
+
     def __call__(self, debug_image, hand_landmarks) -> int:
-        landmark_list = HandGestureClassifier.calc_landmark_list(debug_image, hand_landmarks)
+        landmark_list = HandGestureClassifier.calc_landmark_list(
+            debug_image, hand_landmarks
+        )
 
         pre_processed_landmark_list = self.pre_process_landmark(landmark_list)
 

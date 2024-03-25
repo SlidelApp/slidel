@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 from flask import Flask, Response
 from handtrackingmode import HandDetector
+
 from slidel.gesture_detection.gesture_classifier import HandGestureClassifier
 
 # Parameters
@@ -209,7 +210,7 @@ class Camera(BaseCamera):
 
                 if cy <= gesture_threshold:  # If hand is above the gesture_threshold
                     # Gesture-0 Left
-                    if hand_sign_id == 'prev' or fingers == [0, 0, 0, 0, 0] :
+                    if hand_sign_id == "prev" or fingers == [0, 0, 0, 0, 0]:
                         print("Left")
 
                         if SlideNum > 0:
@@ -221,7 +222,7 @@ class Camera(BaseCamera):
                             SlideNum -= 1
 
                     # Gesture-1 Right
-                    if hand_sign_id == 'next' or fingers == [0, 0, 0, 0, 1]:
+                    if hand_sign_id == "next" or fingers == [0, 0, 0, 0, 1]:
                         print("Right")
                         if SlideNum < len(pathSlides) - 1:
                             button_pressed = True
@@ -232,11 +233,11 @@ class Camera(BaseCamera):
                             SlideNum += 1
 
                 # Gesture-3 Pointer
-                if hand_sign_id == 'pointer' or fingers == [1, 1, 0, 0, 0]:
+                if hand_sign_id == "pointer" or fingers == [1, 1, 0, 0, 0]:
                     cv2.circle(SlideCurrent, index_finger, 12, (0, 0, 255), cv2.FILLED)
 
                 # Gesture-4 Draw
-                if hand_sign_id == 'draw' or fingers == [0, 1, 0, 0, 0]:
+                if hand_sign_id == "draw" or fingers == [0, 1, 0, 0, 0]:
                     if annotation_start is False:
                         annotation_start = True
                         annotation_number += 1
@@ -247,7 +248,7 @@ class Camera(BaseCamera):
                     annotation_start = False
 
                 # Gesture-5
-                if hand_sign_id == 'erase' or fingers == [0, 1, 1, 0, 0]:
+                if hand_sign_id == "erase" or fingers == [0, 1, 1, 0, 0]:
                     if annotations:
                         annotations.pop(-1)
                         annotation_number -= 1
