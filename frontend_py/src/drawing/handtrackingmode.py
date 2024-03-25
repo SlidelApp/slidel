@@ -39,11 +39,13 @@ class HandDetector:
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.hands.process(imgRGB)
         allHands = []
+        handLandmarks = None
         h, w, c = img.shape
         if self.results.multi_hand_landmarks:
             for handType, handLms in zip(
                 self.results.multi_handedness, self.results.multi_hand_landmarks
             ):
+                handLandmarks = handLms
                 myHand = {}
                 # lmList
                 mylmList = []
@@ -97,7 +99,7 @@ class HandDetector:
                         2,
                     )
 
-        return allHands, img
+        return allHands, img, handLandmarks
 
     def fingersUp(self, myHand):
 
