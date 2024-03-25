@@ -34,7 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const editPasswordButton = document.getElementById('editPassword');
   const homeButton = document.getElementById('homeButton');
   const deleteButton = document.getElementById('deleteButton');
+  const files = document.getElementsByClassName('file');
   const file = document.getElementById('file');
+
 
   const displayNameInput = document.getElementById('displayName');
   const usernameInput = document.getElementById('username');
@@ -46,15 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   homeButton.addEventListener('click', () => console.log('Going to Home Page'));
   deleteButton.addEventListener('click', () => confirmDeleteAccount());
-
   const { spawn } = require('child_process');
+  const path = require('path');
 
-  file.addEventListener('change', (event) => {
-    const file = event.target.files[0];
+  document.querySelector('.add-file').addEventListener('click', function () {
+    document.getElementById('file-input').click();
+  });
+
+  document.getElementById('file-input').addEventListener('change', function () {
+    const file = this.files[0];
     console.log(file);
 
-   
-    const python = spawn('python', ['frontend_qt/ui.py/pdf2image.py', file.path, 'output_folder']);
+    
+    const folderPath = path.dirname(file.path);
+
+  
+    const python = spawn('python', ['frontend_py/src/drawing/slidestoring.py', file.path, folderPath]);
 
     python.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
@@ -68,8 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log(`child process exited with code ${code}`);
     });
   });
-
 });
+
+
 
 function toggleEditMode(input) {
   input.readOnly = !input.readOnly;
@@ -82,4 +92,4 @@ function confirmDeleteAccount() {
   } else {
     console.log('Deletion Cancelled');
   }
-}
+  }
