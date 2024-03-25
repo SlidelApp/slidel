@@ -16,8 +16,9 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
   login(username, password)
   .then(function (response) {
     console.log(response);
-    // redirect to index.html
-    window.location.href = 'index.html';
+    // redirect to main.html
+    window.location.href = '/main.html';
+
   })
   .catch(function (error) {
     console.log(error);
