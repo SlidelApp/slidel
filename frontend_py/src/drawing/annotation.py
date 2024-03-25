@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 from flask import Flask, Response
 from handtrackingmode import HandDetector
+from slidel.gesture_detection.gesture_classifier import HandGestureClassifier
 
 # Parameters
 # TODO: Get image height and width dynamically
@@ -104,8 +105,8 @@ class BaseCamera:
             time.sleep(0)
 
             # if there hasn't been any clients asking for frames in
-            # the last 10 seconds then stop the thread
-            if time.time() - BaseCamera.last_access > 10:
+            # the last 60 seconds then stop the thread
+            if time.time() - BaseCamera.last_access > 60:
                 frames_iterator.close()
                 print("Stopping camera thread due to inactivity.")
                 break
@@ -154,6 +155,7 @@ class Camera(BaseCamera):
         # Hand_Detector
         # Here, detectionCon = the code will run if it is 80% of the oblect being a hand.
         detector = HandDetector(detectionCon=0.8, maxHands=1)
+        hand_gesture_classifier = HandGestureClassifier()
 
         while True:  # noqa
             success, img = cam.read()
@@ -172,9 +174,11 @@ class Camera(BaseCamera):
             SlideCurrent = cv2.imread(pathFullSlides)
 
             # cv2.flip( var, 1) + flipType = False == Perfectly flipped img.
-            hands, img = detector.findHands(
+            hands, img, hand_landmarks = detector.findHands(
                 img, flipType=False
             )  # flipType = Flase it will nt flip the img. right will remain right and vice versa.
+            if hand_landmarks:
+                hand_sign_id = hand_gesture_classifier(img, hand_landmarks)
 
             if hands and button_pressed is False:
                 hand = hands[0]
@@ -205,7 +209,7 @@ class Camera(BaseCamera):
 
                 if cy <= gesture_threshold:  # If hand is above the gesture_threshold
                     # Gesture-0 Left
-                    if fingers == [1, 0, 0, 0, 0]:
+                    if hand_sign_id == 'prev' or fingers == [0, 0, 0, 0, 0] :
                         print("Left")
 
                         if SlideNum > 0:
@@ -217,7 +221,7 @@ class Camera(BaseCamera):
                             SlideNum -= 1
 
                     # Gesture-1 Right
-                    if fingers == [0, 0, 0, 0, 1]:
+                    if hand_sign_id == 'next' or fingers == [0, 0, 0, 0, 1]:
                         print("Right")
                         if SlideNum < len(pathSlides) - 1:
                             button_pressed = True
@@ -228,11 +232,11 @@ class Camera(BaseCamera):
                             SlideNum += 1
 
                 # Gesture-3 Pointer
-                if fingers == [0, 1, 1, 0, 0]:
+                if hand_sign_id == 'pointer' or fingers == [1, 1, 0, 0, 0]:
                     cv2.circle(SlideCurrent, index_finger, 12, (0, 0, 255), cv2.FILLED)
 
                 # Gesture-4 Draw
-                if fingers == [0, 1, 0, 0, 0]:
+                if hand_sign_id == 'draw' or fingers == [0, 1, 0, 0, 0]:
                     if annotation_start is False:
                         annotation_start = True
                         annotation_number += 1
@@ -243,7 +247,7 @@ class Camera(BaseCamera):
                     annotation_start = False
 
                 # Gesture-5
-                if fingers == [0, 1, 1, 1, 1]:
+                if hand_sign_id == 'erase' or fingers == [0, 1, 1, 0, 0]:
                     if annotations:
                         annotations.pop(-1)
                         annotation_number -= 1
@@ -276,7 +280,7 @@ class Camera(BaseCamera):
             SlideCurrent[0:hs, w - ws : w] = imgSmall
 
             # cv2.namedWindow("Slides", cv2.WINDOW_NORMAL)
-            # cv2.imshow("Slides", SlideCurrent)
+            cv2.imshow("Slides", SlideCurrent)
             # cv2.imshow("Image", img)
 
             Key = cv2.waitKey(1)
