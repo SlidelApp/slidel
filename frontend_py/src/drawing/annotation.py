@@ -281,7 +281,7 @@ class Camera(BaseCamera):
             SlideCurrent[0:hs, w - ws : w] = imgSmall
 
             # cv2.namedWindow("Slides", cv2.WINDOW_NORMAL)
-            cv2.imshow("Slides", SlideCurrent)
+            # cv2.imshow("Slides", SlideCurrent)
             # cv2.imshow("Image", img)
 
             Key = cv2.waitKey(1)
